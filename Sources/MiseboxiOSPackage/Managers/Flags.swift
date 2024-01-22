@@ -7,7 +7,7 @@
 
 import Foundation
 
-let countryEmojis: [(name: String, code: String)] = [
+public let countryEmojis: [(name: String, code: String)] = [
     ("Afghanistan", "🇦🇫"),
     ("Albania", "🇦🇱"),
     ("Algeria", "🇩🇿"),
