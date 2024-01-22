@@ -37,12 +37,10 @@ extension ChefProfileManager {
         }
         
         public func toFirestore() -> [String: Any] {
-            return [
-                "full_name": [
-                    "first": first,
-                    "middle": middle,
-                    "last": last
-                ]
+            [
+                "first": first,
+                "middle": middle,
+                "last": last
             ]
         }
         
@@ -52,7 +50,7 @@ extension ChefProfileManager {
     }
     
     // MARK: - 2. Nationality / store as object
-
+    
     public struct Nationality {
         public var country = ""
         public var flagCode = ""
@@ -65,11 +63,9 @@ extension ChefProfileManager {
         }
         
         public func toFirestore() -> [String: Any] {
-            return [
-                "nationality": [
-                    "country": country,
-                    "flag_code": flagCode
-                ]
+            [
+                "country": country,
+                "flag_code": flagCode
             ]
         }
     }
@@ -87,11 +83,9 @@ extension ChefProfileManager {
         }
         
         public func toFirestore() -> [String: Any] {
-            return [
-                "about_me_bio": [
-                    "about_me": aboutMe,
-                    "bio": bio
-                ]
+            [
+                "about_me": aboutMe,
+                "bio": bio
             ]
         }
     }
@@ -110,9 +104,9 @@ extension ChefProfileManager {
         }
         
         public func toFirestore() -> [String: Any] {
-            return [
-                    "name": name,
-                    "image_url": imageUrl
+            [
+                "name": name,
+                "image_url": imageUrl
             ]
         }
     }
@@ -136,15 +130,15 @@ extension ChefProfileManager {
             self.description = fire["description"] as? String ?? ""
         }
         public var isValid: Bool {
-               !employerName.isEmpty && !role.isEmpty
-           }
+            !employerName.isEmpty && !role.isEmpty
+        }
         public func toFirestore() -> [String: Any] {
-            return [
-                    "employer_name": employerName,
-                    "role": role,
-                    "start_date": startDate,
-                    "end_date": endDate,
-                    "description": description
+            [
+                "employer_name": employerName,
+                "role": role,
+                "start_date": startDate,
+                "end_date": endDate,
+                "description": description
             ]
         }
     }
@@ -169,7 +163,7 @@ extension ChefProfileManager {
         }
         
         public func toFirestore() -> [String: Any] {
-            return [
+            [
                 "doc_url": docURL,
                 "institution": institution,
                 "name": name,
@@ -192,9 +186,9 @@ extension ChefProfileManager {
         }
         
         public func toFirestore() -> [String: Any] {
-            return [
-                    "lang": lang,
-                    "level": level
+            [
+                "lang": lang,
+                "level": level
             ]
         }
     }

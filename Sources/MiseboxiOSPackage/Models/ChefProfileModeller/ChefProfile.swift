@@ -36,7 +36,7 @@ extension ChefProfileManager {
         @Published public var fullName = FullName()
         @Published public var nationality = Nationality()
         @Published public var aboutMeBio = AboutMeBio()  // Replaced CV with AboutMeBio
-
+        
         // Array (Arrays of objects)
         @Published public var gallery: [GalleryImage] = []
         @Published public var previousEmployment: [PreviousEmployment] = []
@@ -58,26 +58,26 @@ extension ChefProfileManager {
         }
         
         public func update(with data: [String: Any]) {
-                
-                self.name = data["name"] as? String ?? ""
-                self.imageUrl = data["image_url"] as? String ?? ""
-                self.username = data["username"] as? String ?? ""
-                
-                self.fullName = fireObject(from: data["full_name"] as? [String: Any] ?? [:], using: FullName.init) ?? FullName()
-                self.aboutMeBio = fireObject(from: data["about_me_bio"] as? [String: Any] ?? [:], using: AboutMeBio.init) ?? AboutMeBio()
-                self.nationality = fireObject(from: data["nationality"] as? [String: Any] ?? [:], using: Nationality.init) ?? Nationality()
-                
-                self.gallery = (data["gallery"] as? [[String: Any]] ?? []).compactMap(GalleryImage.init)
-                
-                self.previousEmployment = fireArray(from: data["previous_employment"] as? [[String: Any]] ?? [], using: PreviousEmployment.init)
-                self.qualifications = fireArray(from: data["qualifications"] as? [[String: Any]] ?? [], using: Qualification.init)
-                self.spokenLanguages = fireArray(from: data["spoken_languages"] as? [[String: Any]] ?? [], using: SpokenLanguage.init)
+            
+            self.name = data["name"] as? String ?? ""
+            self.imageUrl = data["image_url"] as? String ?? ""
+            self.username = data["username"] as? String ?? ""
+            
+            self.fullName = fireObject(from: data["full_name"] as? [String: Any] ?? [:], using: FullName.init) ?? FullName()
+            self.aboutMeBio = fireObject(from: data["about_me_bio"] as? [String: Any] ?? [:], using: AboutMeBio.init) ?? AboutMeBio()
+            self.nationality = fireObject(from: data["nationality"] as? [String: Any] ?? [:], using: Nationality.init) ?? Nationality()
+            
+            self.gallery = (data["gallery"] as? [[String: Any]] ?? []).compactMap(GalleryImage.init)
+            
+            self.previousEmployment = fireArray(from: data["previous_employment"] as? [[String: Any]] ?? [], using: PreviousEmployment.init)
+            self.qualifications = fireArray(from: data["qualifications"] as? [[String: Any]] ?? [], using: Qualification.init)
+            self.spokenLanguages = fireArray(from: data["spoken_languages"] as? [[String: Any]] ?? [], using: SpokenLanguage.init)
             
         }
         
-
+        
         public func toFirestore() -> [String: Any] {
-            return [
+            [
                 "name": name,
                 "image_url": imageUrl,
                 "username": username,
