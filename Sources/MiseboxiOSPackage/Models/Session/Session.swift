@@ -16,7 +16,7 @@ public enum UserRole {
 extension SessionManager {
     
     public class Session: ObservableObject {
-        let role: UserRole
+        public let role: UserRole
         @Published var id = ""
         @Published var isDarkMode = false
         
