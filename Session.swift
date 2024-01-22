@@ -9,12 +9,12 @@ import Foundation
 import Combine
 
 extension SessionManager {
-    class Session: ObservableObject {
+    public class Session: ObservableObject {
         let role: String
         @Published var id = ""
         @Published var isDarkMode = false
         
-        init(role: String) {
+        public init(role: String) {
             self.role = role
         }
     }

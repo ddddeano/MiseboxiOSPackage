@@ -7,12 +7,12 @@
 
 import Foundation
 
-final class SessionManager {
+public final class SessionManager {
     @Published var session: Session
     
     private let themePreferenceKey = "isDarkModeEnabled"
     
-    init(session: Session) {
+    public init(session: Session) {
         self.session = session
         loadThemePreferences()
     }
