@@ -25,7 +25,9 @@ let package = Package(
             name: "MiseboxiOSPackage",
             dependencies: [
                 // Add FirebaseAuth as a dependency for your target
-                .product(name: "FirebaseAuth", package: "firebase-ios-sdk")
+                .product(name: "FirebaseAuth", package: "firebase-ios-sdk"),
+                .product(name: "FirebaseFirestore", package: "firebase-ios-sdk"),
+                .product(name: "FirebaseStorage", package: "firebase-ios-sdk")
             ]
         ),
         .testTarget(

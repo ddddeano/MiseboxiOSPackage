@@ -6,3 +6,23 @@
 //
 
 import Foundation
+import FirebaseFirestore
+
+
+public final class ChefProfileManager: ObservableObject {
+    
+    var firestoreManager = FirestoreManager()
+    var rootCollection = "chef-profiles"
+    
+    var listener: ListenerRegistration?
+    deinit {
+        listener?.remove()
+    }
+    @Published public var chefProfile: ChefProfile
+    
+    public init(chefProfile: ChefProfile) {
+        self.chefProfile = chefProfile
+    }
+}
+    
+    

@@ -6,3 +6,16 @@
 //
 
 import Foundation
+import FirebaseFirestore
+
+public final class KitchenManager {
+    let firestoreManager = FirestoreManager()
+    var rootCollection = "kitchens"
+    var listener: ListenerRegistration?
+
+    deinit {
+        listener?.remove()
+    }
+}
+
+
