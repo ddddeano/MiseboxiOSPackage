@@ -3,24 +3,34 @@
 
 import PackageDescription
 
+
+
 let package = Package(
     name: "MiseboxiOSPackage",
     platforms: [
-            .iOS(.v13)  // Set the minimum deployment target to iOS 13
-        ],
+        .iOS(.v13) // Ensure your platform version is correct
+    ],
     products: [
-        // Products define the executables and libraries a package produces, making them visible to other packages.
         .library(
             name: "MiseboxiOSPackage",
-            targets: ["MiseboxiOSPackage"]),
+            targets: ["MiseboxiOSPackage"]
+        ),
+    ],
+    dependencies: [
+        // Add Firebase as a dependency
+        .package(url: "https://github.com/firebase/firebase-ios-sdk.git", from: "X.X.X") // Replace X.X.X with the desired version
     ],
     targets: [
-        // Targets are the basic building blocks of a package, defining a module or a test suite.
-        // Targets can depend on other targets in this package and products from dependencies.
         .target(
-            name: "MiseboxiOSPackage"),
+            name: "MiseboxiOSPackage",
+            dependencies: [
+                // Add FirebaseAuth as a dependency for your target
+                .product(name: "FirebaseAuth", package: "firebase-ios-sdk")
+            ]
+        ),
         .testTarget(
             name: "MiseboxiOSPackageTests",
-            dependencies: ["MiseboxiOSPackage"]),
+            dependencies: ["MiseboxiOSPackage"]
+        ),
     ]
 )
