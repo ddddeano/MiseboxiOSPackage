@@ -27,7 +27,7 @@ extension ChefProfileManager {
         firestoreManager.updateDocument(collection: rootCollection, documentID: id, updateData: data)
     }
     
-    public func updateSection(section: String, data: [[String: Any]]) async throws {
+    public func updateSection(section: String, data: [String: Any]) async throws {
         firestoreManager.updateDocumentSection(
             collection: rootCollection,
             documentID: self.id,
