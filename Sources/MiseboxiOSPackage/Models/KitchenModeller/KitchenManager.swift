@@ -16,6 +16,7 @@ public final class KitchenManager {
     deinit {
         listener?.remove()
     }
+    public init() {}
 }
 
 
