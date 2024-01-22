@@ -111,7 +111,7 @@ public class FirestoreManager {
         }
     }
     
-    public func updateDocumentSection(collection: String, documentID: String, section: String, updateData: [String: Any]) {
+    public func updateDocumentSection(collection: String, documentID: String, section: String, updateData: [[String: Any]]) {
             let docRef = db.collection(collection).document(documentID)
             var dataToUpdate = [String: Any]()
             dataToUpdate[section] = updateData
