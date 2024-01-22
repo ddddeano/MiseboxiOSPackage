@@ -8,8 +8,9 @@
 import Foundation
 import Combine
 
-public enum UserRole {
-    case recruiter, chef
+public enum UserRole: String {
+    case recruiter = "recruiter"
+    case chef = "chef"
 }
 
 
