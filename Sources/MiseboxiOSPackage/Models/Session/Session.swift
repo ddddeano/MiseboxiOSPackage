@@ -9,7 +9,7 @@ import Foundation
 import Combine
 
 public enum UserRole {
-    case miseboxUser, chef
+    case recruiter, chef
 }
 
 

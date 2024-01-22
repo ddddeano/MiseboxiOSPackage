@@ -18,7 +18,7 @@ public final class SessionManager {
     }
     
     func resetSession() {
-        self.session = Session(role: "")
+        self.session = Session(role: session.role)
     }
 
     func saveThemePreferences(isDarkModeEnabled: Bool) {
