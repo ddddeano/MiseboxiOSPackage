@@ -17,8 +17,8 @@ extension SessionManager {
     
     public class Session: ObservableObject {
         public let role: UserRole
-        @Published var id = ""
-        @Published var isDarkMode = false
+        @Published public var id = ""
+        @Published public var isDarkMode = false
         
         public init(role: UserRole) {
             self.role = role
