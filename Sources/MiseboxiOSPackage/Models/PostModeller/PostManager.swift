@@ -24,6 +24,7 @@ public final class PostManager {
         try await firestoreManager.createFeedEntry(entry: entry)
     }
     
+    public init() {}
     public enum PostableCollectionNames: String {
         case chefs = "chefs"
         case gigs = "gigs"
