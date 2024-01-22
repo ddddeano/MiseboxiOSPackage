@@ -8,13 +8,19 @@
 import Foundation
 import Combine
 
+public enum UserRole {
+    case miseboxUser, chef
+}
+
+
 extension SessionManager {
+    
     public class Session: ObservableObject {
-        let role: String
+        let role: UserRole
         @Published var id = ""
         @Published var isDarkMode = false
         
-        public init(role: String) {
+        public init(role: UserRole) {
             self.role = role
         }
     }
