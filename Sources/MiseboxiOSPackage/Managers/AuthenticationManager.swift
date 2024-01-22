@@ -9,23 +9,25 @@ import Foundation
 import Firebase
 import FirebaseAuth
 
-class AuthenticationManager: ObservableObject {
+public class AuthenticationManager: ObservableObject {
     
-    struct FirebaseUser {
-        let uid: String
-        let email: String?
-        let isAnon: Bool
+    public struct FirebaseUser {
+        public let uid: String
+        public let email: String?
+        public let isAnon: Bool
         
-        init(user: User) {
+        public init(user: User) {
             self.uid = user.uid
             self.email = user.email
             self.isAnon = user.isAnonymous
         }
     }
     
-    @Published var authError: Error?
+    @Published public var authError: Error?
     
-    func authenticate() async throws -> FirebaseUser {
+    public init() {}
+    
+    public func authenticate() async throws -> FirebaseUser {
         if let currentUser = Auth.auth().currentUser {
             // User is already signed in
             return FirebaseUser(user: currentUser)
@@ -35,7 +37,7 @@ class AuthenticationManager: ObservableObject {
         }
     }
 
-    func linkEmailToUser(email: String, password: String, user: User) async throws -> FirebaseUser {
+    public func linkEmailToUser(email: String, password: String, user: User) async throws -> FirebaseUser {
         do {
             let linkedUser = try await linkEmail(email: email, password: password)
             return linkedUser
@@ -46,22 +48,23 @@ class AuthenticationManager: ObservableObject {
     }
     
     @discardableResult
-    func signInAnon() async throws -> FirebaseUser {
+    public func signInAnon() async throws -> FirebaseUser {
         let authResultData =  try await Auth.auth().signInAnonymously()
         return FirebaseUser(user: authResultData.user)
     }
 
-    func createUser(email: String, password: String) async throws -> FirebaseUser {
+    public func createUser(email: String, password: String) async throws -> FirebaseUser {
         let authResult = try await Auth.auth().createUser(withEmail: email, password: password)
         return FirebaseUser(user: authResult.user)
     }
 
-    func signInUser(email: String, password: String) async throws -> FirebaseUser {
+    public func signInUser(email: String, password: String) async throws -> FirebaseUser {
         let authResult = try await Auth.auth().signIn(withEmail: email, password: password)
         return FirebaseUser(user: authResult.user)
     }
+    
     @discardableResult
-    func linkEmail(email: String, password: String) async throws -> FirebaseUser {
+    public func linkEmail(email: String, password: String) async throws -> FirebaseUser {
         let credential = EmailAuthProvider.credential(withEmail: email, password: password)
         guard let currentUser = Auth.auth().currentUser else {
             throw URLError(.badServerResponse)
