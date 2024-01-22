@@ -21,8 +21,7 @@ public class FirestoreManager {
         case unknown, invalidSnapshot, networkError, documentNotFound
     }
     
-    // MARK: - Properties
-    
+    public init() {}
     // MARK: - Document Management
     
     public func checkDocumentExists(collection: String, documentID: String) async throws -> Bool {

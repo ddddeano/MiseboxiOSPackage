@@ -68,7 +68,7 @@ extension MiseboxUserManager {
             ]
         }
     }
-    func resetMiseboxUser() {
+    public func resetMiseboxUser() {
         self.miseboxUser = MiseboxUser()
         listener?.remove()
     }

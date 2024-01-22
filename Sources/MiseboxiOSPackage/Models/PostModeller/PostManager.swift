@@ -102,17 +102,16 @@ public final class PostManager {
         }
         
         public func toFirestore() -> [String: Any] {
-            var firestoreData: [String: Any] = ["title": title, "body": body]
-            if let imageUrl = imageUrl {
-                firestoreData["image_url"] = imageUrl
-            }
-            return firestoreData
+            return [
+                "title": title,
+                "body": body,
+                "image_url": imageUrl ?? ""
+            ]
         }
     }
     
     
     public func documentListenerChef(chefId: String, completion: @escaping (Result<ChefManager.Chef, Error>) -> Void) -> ListenerRegistration {
-        // Assuming ChefManager.Chef conforms to Listenable
         let chef = ChefManager.Chef()
         return firestoreManager.addDocumentListener(for: chef, completion: completion)
     }
