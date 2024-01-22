@@ -8,7 +8,7 @@
 import Foundation
 
 public final class SessionManager {
-    @Published var session: Session
+    @Published public var session: Session
     
     private let themePreferenceKey = "isDarkModeEnabled"
     
@@ -17,11 +17,11 @@ public final class SessionManager {
         loadThemePreferences()
     }
     
-    func resetSession() {
+    public func resetSession() {
         self.session = Session(role: session.role)
     }
 
-    func saveThemePreferences(isDarkModeEnabled: Bool) {
+    public func saveThemePreferences(isDarkModeEnabled: Bool) {
         UserDefaults.standard.set(isDarkModeEnabled, forKey: themePreferenceKey)
     }
 
