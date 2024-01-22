@@ -26,7 +26,7 @@ extension ChefManager {
         // Creating and saving chef profile
         let newChefProfile = ChefProfileManager.ChefProfile(chef: self.chef)
         try await firestoreManager.setDoc(collection: "chef-profiles", entity: newChefProfile)
-        
+        print("[ChefManager] creating chef profile with \(newChefProfile)")
         // Adding role to MiseboxUser
         let role =  MiseboxUserManager.Role(role: "chef", name: name)
         
