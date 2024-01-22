@@ -41,67 +41,67 @@ public final class PostManager {
     }
     
     public struct Sender {
-        var id = ""
-        var name = ""
-        var role = ""
-        var imageUrl = ""
+        public var id = ""
+        public var name = ""
+        public var role = ""
+        public var imageUrl = ""
         
-        init(fromDictionary fire: [String: Any]? = nil) {
+        public init(fromDictionary fire: [String: Any]? = nil) {
             self.id = fire?["id"] as? String ?? id
             self.name = fire?["name"] as? String ?? name
             self.role = fire?["role"] as? String ?? role
             self.imageUrl = fire?["image_url"] as? String ?? imageUrl
         }
         
-        init(id: String, name: String, role: String, imageUrl: String = "") {
+        public init(id: String, name: String, role: String, imageUrl: String = "") {
             self.id = id
             self.name = name
             self.role = role
             self.imageUrl = imageUrl
         }
         
-        func toFirestore() -> [String: Any] {
-            return ["id": id, "name": name, "role": role, "image_url": imageUrl]
+        public func toFirestore() -> [String: Any] {
+            ["id": id, "name": name, "role": role, "image_url": imageUrl]
         }
     }
     
     public struct PostSubject {
-        var subjectId = ""
-        var collectionName = ""
+        public var subjectId = ""
+        public var collectionName = ""
         
-        init(fromDictionary fire: [String: Any]? = nil) {
+        public init(fromDictionary fire: [String: Any]? = nil) {
             self.subjectId = fire?["subject_id"] as? String ?? subjectId
             self.collectionName = fire?["collection_name"] as? String ?? collectionName
         }
         
-        init(subjectId: String, collectionName: String) {
+        public init(subjectId: String, collectionName: String) {
             self.subjectId = subjectId
             self.collectionName = collectionName
         }
         
-        func toFirestore() -> [String: Any] {
-            return ["subject_id": subjectId, "collection_name": collectionName]
+        public func toFirestore() -> [String: Any] {
+            ["subject_id": subjectId, "collection_name": collectionName]
         }
     }
     
     public struct PostContent {
-        var title = ""
-        var body = ""
-        var imageUrl: String?
+        public var title = ""
+        public var body = ""
+        public var imageUrl: String?
         
-        init(fromDictionary fire: [String: Any]? = nil) {
+        public init(fromDictionary fire: [String: Any]? = nil) {
             self.title = fire?["title"] as? String ?? title
             self.body = fire?["body"] as? String ?? body
             self.imageUrl = fire?["image_url"] as? String ?? imageUrl
         }
         
-        init(title: String, body: String, imageUrl: String? = nil) {
+        public init(title: String, body: String, imageUrl: String? = nil) {
             self.title = title
             self.body = body
             self.imageUrl = imageUrl
         }
         
-        func toFirestore() -> [String: Any] {
+        public func toFirestore() -> [String: Any] {
             var firestoreData: [String: Any] = ["title": title, "body": body]
             if let imageUrl = imageUrl {
                 firestoreData["image_url"] = imageUrl
@@ -111,20 +111,20 @@ public final class PostManager {
     }
     
     
-    func documentListenerChef(chefId: String, completion: @escaping (Result<ChefManager.Chef, Error>) -> Void) -> ListenerRegistration {
+    public func documentListenerChef(chefId: String, completion: @escaping (Result<ChefManager.Chef, Error>) -> Void) -> ListenerRegistration {
         // Assuming ChefManager.Chef conforms to Listenable
         let chef = ChefManager.Chef()
         return firestoreManager.addDocumentListener(for: chef, completion: completion)
     }
     
     
-    enum PostManagerError: Error {
+    public  enum PostManagerError: Error {
         case firestoreError(Error)
         case noDocuments
         case invalidData
     }
     
-    func localCollectionListener(completion: @escaping (Result<[Postable], Error>) -> Void) {
+    public func localCollectionListener(completion: @escaping (Result<[Postable], Error>) -> Void) {
         let collectionRef = Firestore.firestore().collection(rootCollection)
         listener = collectionRef.addSnapshotListener { querySnapshot, error in
             print("Firestore snapshot listener triggered") // Add this for debugging
@@ -163,7 +163,7 @@ public final class PostManager {
         }
     }
     
-    static func formattedDate(from date: Date) -> String {
+    public static func formattedDate(from date: Date) -> String {
         let calendar = Calendar.current
         let now = Date()
         let components = calendar.dateComponents([.day], from: date, to: now)
