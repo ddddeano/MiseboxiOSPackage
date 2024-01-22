@@ -14,8 +14,11 @@ extension ChefManager {
 
     public func setChef(miseboxUser: MiseboxUserManager.MiseboxUser) async throws {
         // Setting the chef's user details
-        self.chef.miseboxUser = ChefManager.MiseboxUser(fromMiseboxUser: miseboxUser)
         self.chef.id = miseboxUser.id
+        self.chef.miseboxUser = ChefManager.MiseboxUser(fromMiseboxUser: miseboxUser)
+        self.chef.imageUrl = "https://firebasestorage.googleapis.com:443/v0/b/misebox-78f9c.appspot.com/o/avatars%2FNewChef.jpg?alt=media&token=401c6a03-bc6f-4ecd-8d3b-e2ec96bc6aed"
+        
+        // TODO image = misebox.image
         
         // Saving chef details to Firestore
         try await firestoreManager.setDoc(collection: rootCollection, entity: self.chef)
@@ -51,7 +54,7 @@ extension ChefManager {
         case .chefCreated:
             title = "Welcome \(self.name)"
             body = "Enjoy the Misebox Ecosystem 👋 "
-            image = "https://firebasestorage.googleapis.com:443/v0/b/misebox-78f9c.appspot.com/o/avatars%2FNewChef.jpg?alt=media&token=401c6a03-bc6f-4ecd-8d3b-e2ec96bc6aed"
+            image = imageUrl
         case .chefDeleted:
             title = "u Revoir Chef \(self.name)"
             body = "A \(self.name). 👋 Good Luck in the future."
