@@ -8,12 +8,12 @@
 import Foundation
 import SwiftUI
 
-struct VerifyUserView: View {
-    var vm: CanMiseboxUser
-    var isOnboarding: Bool
+public struct VerifyUserView: View {
+    public var vm: CanMiseboxUser
+    public var isOnboarding: Bool
     @State private var username = ""
 
-    var body: some View {
+    public var body: some View {
         VStack(spacing: 20) {
             if isOnboarding {
                 Image("LogoType")
