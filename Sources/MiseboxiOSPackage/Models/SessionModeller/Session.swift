@@ -8,14 +8,13 @@
 import Foundation
 import Combine
 
-public enum UserRole: String {
-    case recruiter = "recruiter"
-    case chef = "chef"
-}
-
 
 extension SessionManager {
     
+    public enum UserRole: String {
+        case recruiter = "recruiter"
+        case chef = "chef"
+    }
     public class Session: ObservableObject {
         public let role: UserRole
         @Published public var id = ""

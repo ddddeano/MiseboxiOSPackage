@@ -9,7 +9,7 @@ import Foundation
 import FirebaseFirestore
 
 public final class MiseboxUserManager: ObservableObject {
-    public var role: UserRole
+    public var role: SessionManager.UserRole
     
     let firestoreManager = FirestoreManager()
     var rootCollection = "misebox-users"
@@ -21,7 +21,7 @@ public final class MiseboxUserManager: ObservableObject {
 
     @Published public var miseboxUser: MiseboxUser
     
-    public init(user: MiseboxUser, role: UserRole) {
+    public init(user: MiseboxUser, role: SessionManager.UserRole) {
         self.miseboxUser = user
         self.role = role
     }
