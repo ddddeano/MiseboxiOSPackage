@@ -37,4 +37,3 @@ public protocol CanMiseboxUser {
     func verifyMiseboxUser(with accountType: MiseboxUserManager.AccountType) async
     func onboardMiseboxUser() async
 }
-
