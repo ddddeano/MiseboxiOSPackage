@@ -13,6 +13,11 @@ public struct VerifyUserView: View {
     public var isOnboarding: Bool
     @State private var username = ""
 
+    public init(vm: CanMiseboxUser, isOnboarding: Bool) {
+        self.vm = vm
+        self.isOnboarding = isOnboarding
+    }
+
     public var body: some View {
         VStack(spacing: 20) {
             if isOnboarding {
