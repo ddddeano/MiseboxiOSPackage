@@ -39,6 +39,6 @@ struct VerifyUserView: View {
                 }
             }
         }
-        .padding()
+//        .padding()
     }
 }
