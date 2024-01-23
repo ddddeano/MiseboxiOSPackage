@@ -23,7 +23,7 @@ extension MiseboxUserManager {
     public var accountProviders: [String] {
         return miseboxUser.accountProviders
     }
-    public var roles: [Role] {
+    public var roles: [AppRole] {
         return miseboxUser.roles
     }
     public var imageUrl: String {
@@ -39,7 +39,7 @@ extension MiseboxUserManager {
 
         @Published public var verified = false
         @Published public var accountProviders: [String] = []
-        @Published public var roles: [Role] = []
+        @Published public var roles: [AppRole] = []
         
         public init() {}
 
@@ -55,7 +55,7 @@ extension MiseboxUserManager {
 
             self.verified = data["verified"] as? Bool ?? self.verified
             self.accountProviders = data["account_providers"] as? [String] ?? []
-            self.roles = fireArray(from: data["roles"] as? [[String: Any]] ?? [], using: Role.init(fromDictionary:))
+            self.roles = fireArray(from: data["roles"] as? [[String: Any]] ?? [], using: AppRole.init(fromDictionary:))
         }
         
         public func toFirestore() -> [String: Any] {

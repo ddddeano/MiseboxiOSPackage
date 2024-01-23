@@ -8,7 +8,7 @@
 import Foundation
 
 extension MiseboxUserManager {
-    public struct Role {
+    public struct AppRole {
         public var role: String
         public var username: String
         
@@ -29,7 +29,7 @@ extension MiseboxUserManager {
         }
     }
     
-    public func addRoleToMiseboxUser(role: Role) async {
+    public func addRoleToMiseboxUser(role: AppRole) async {
         await firestoreManager.updateDocumentDependant(
             collection: rootCollection,
             documentID: self.id,
