@@ -34,6 +34,6 @@ public final class MiseboxUserManager: ObservableObject {
 public protocol CanMiseboxUser {
     var authenticationManager: AuthenticationManager { get }
     var miseboxUserManager: MiseboxUserManager { get }
-    func verifyMiseboxUser(with accountType: MiseboxUserManager.AccountType) async
+    func verifyMiseboxUser(with accountType: MiseboxUserManager.AccountType) async throws
     func onboardMiseboxUser() async
 }
