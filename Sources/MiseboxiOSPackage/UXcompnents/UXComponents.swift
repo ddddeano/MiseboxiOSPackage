@@ -1,19 +1,19 @@
-//
 //  File.swift
-//  
+//
 //
 //  Created by Daniel Watson on 23.01.24.
 //
 
 import Foundation
 import SwiftUI
+
 // MARK: - UXComponents View (for Preview)
 
-struct UXComponents: View {
+public struct UXComponents: View {
     @State private var int = 0
     @State private var string = "sample"
 
-    var body: some View {
+    public var body: some View {
         ScrollView {
             VStack(alignment: .leading, spacing: 10) {
                 Text("Atoms").font(.headline).padding(.top)
@@ -38,51 +38,49 @@ struct UXComponents: View {
     }
 }
 
-#Preview {
-    UXComponents()
-}
 
 // MARK: - Atoms
 // These are the basic building blocks of the UI.
 
-struct CustomLabel: View {
+public struct CustomLabel: View {
     var text: String
     var style: StyleType
 
-    var body: some View {
+    public var body: some View {
         Text(text)
             .modifier(CustomLabelStyle(style: style))
     }
 }
 
-struct CustomTextField: View {
+public struct CustomTextField: View {
     var placeholder: String
     @Binding var text: String
     var style: StyleType
 
-    var body: some View {
+    public var body: some View {
         TextField(placeholder, text: $text)
             .textFieldStyle(CustomTextFieldStyle(style: style.style))
     }
 }
-struct CustomSecureField: View {
+
+public struct CustomSecureField: View {
     var placeholder: String
     @Binding var text: String
     var style: StyleType
 
-    var body: some View {
+    public var body: some View {
         SecureField(placeholder, text: $text)
             .textFieldStyle(CustomTextFieldStyle(style: style.style))
     }
 }
 
-struct CustomButton: View {
+public struct CustomButton: View {
     var title: String
     var action: () -> Void
     var style: StyleType
     var iconName: String? // Optional icon name
 
-    var body: some View {
+    public var body: some View {
         Button(action: action) {
             HStack {
                 if let iconName = iconName {
@@ -97,15 +95,14 @@ struct CustomButton: View {
     }
 }
 
-
-struct TimePickerComponent: View {
+public struct TimePickerComponent: View {
     var label: String
     @Binding var selection: Int
     var range: ClosedRange<Int>
     var step: Int = 1 // Step parameter reintroduced
     var style: Style
 
-    var body: some View {
+    public var body: some View {
         Picker(label, selection: $selection) {
             ForEach(range, id: \.self) { index in
                 Text("\(index * step)")
@@ -120,18 +117,15 @@ struct TimePickerComponent: View {
     }
 }
 
-
-
 // MARK: - Molecules
 // These are combinations of one or more atoms.
 
-
-struct TimePicker: View {
+public struct TimePicker: View {
     @Binding var selectedHour: Int
     @Binding var selectedMinute: Int
     var startOrFinish: TimeType
 
-    var body: some View {
+    public var body: some View {
         HStack(spacing: 10) {
             TimePickerComponent(
                 label: "Hour",
@@ -151,26 +145,25 @@ struct TimePicker: View {
     }
 }
 
-
 // MARK: - Supporting Structures, Enums, Styles
 
-struct Style {
+public struct Style {
     let foregroundColor: Color
     let backgroundColor: Color
     let shadowRadius: CGFloat = 5
     let cornerRadius: CGFloat = 5
 
     // Initialize with default values for shadow radius and corner radius
-    init(foregroundColor: Color, backgroundColor: Color) {
+    public init(foregroundColor: Color, backgroundColor: Color) {
         self.foregroundColor = foregroundColor
         self.backgroundColor = backgroundColor
     }
 }
 
-enum StyleType {
+public enum StyleType {
     case primary, secondary
 
-    var style: Style {
+    public var style: Style {
         switch self {
         case .primary:
             return Style(
@@ -185,8 +178,9 @@ enum StyleType {
         }
     }
 }
+
 extension StyleType {
-    static func forTimeType(_ timeType: TimeType) -> Style {
+    public static func forTimeType(_ timeType: TimeType) -> Style {
         switch timeType {
         case .start:
             return Style(
@@ -202,10 +196,10 @@ extension StyleType {
     }
 }
 
-struct CustomLabelStyle: ViewModifier {
+public struct CustomLabelStyle: ViewModifier {
     var style: StyleType
 
-    func body(content: Content) -> some View {
+    public func body(content: Content) -> some View {
         content
             .fontWeight(.bold)
             .foregroundColor(style.style.foregroundColor)
@@ -214,11 +208,10 @@ struct CustomLabelStyle: ViewModifier {
     }
 }
 
-
-struct CustomButtonStyle: ButtonStyle {
+public struct CustomButtonStyle: ButtonStyle {
     var style: Style
-    
-    func makeBody(configuration: Configuration) -> some View {
+
+    public func makeBody(configuration: Configuration) -> some View {
         configuration.label
             .foregroundColor(style.foregroundColor)
             .padding()
@@ -232,10 +225,10 @@ struct CustomButtonStyle: ButtonStyle {
     }
 }
 
-struct CustomTextFieldStyle: TextFieldStyle {
+public struct CustomTextFieldStyle: TextFieldStyle {
     var style: Style
-    
-    func _body(configuration: TextField<_Label>) -> some View {
+
+    public func _body(configuration: TextField<_Label>) -> some View {
         configuration
             .padding()
             .background(style.backgroundColor)
@@ -245,7 +238,56 @@ struct CustomTextFieldStyle: TextFieldStyle {
     }
 }
 
-enum TimeType {
+public enum TimeType {
     case start, end
 }
 
+public struct AvatarView: View {
+    var imageUrl: String
+    var width: CGFloat
+    var height: CGFloat
+    var onSelect: () -> Void
+    var hasNewContent: Bool = true
+
+    public var notificationRing: some View {
+        Group {
+            if hasNewContent {
+                Circle()
+                    .stroke(LinearGradient(gradient: Gradient(colors: [Color.green, Color.blue]), startPoint: .topLeading, endPoint: .bottomTrailing),
+                            lineWidth: width * 0.05)
+            } else {
+                Circle()
+                    .stroke(Color.black, lineWidth: 1)
+            }
+        }
+        .frame(width: width + (hasNewContent ? width * 0.05 : 1) * 2, height: height + (hasNewContent ? height * 0.05 : 1) * 2)
+    }
+
+    public var asyncImage: some View {
+        AsyncImage(url: URL(string: imageUrl)) { phase in
+            switch phase {
+            case .empty:
+                ProgressView()
+            case .success(let image):
+                image.resizable().scaledToFill()
+            case .failure:
+                Image(systemName: "exclamationmark.triangle").resizable().scaledToFit().foregroundColor(.red)
+            @unknown default:
+                EmptyView()
+            }
+        }
+        .frame(width: width, height: height)
+        .clipShape(Circle())
+        .shadow(color: .gray, radius: 1, x: 0, y: 0) // Sharper shadow
+    }
+
+    public var body: some View {
+        Button(action: onSelect) {
+            ZStack {
+                notificationRing
+                asyncImage
+            }
+        }
+        .buttonStyle(PlainButtonStyle())
+    }
+}

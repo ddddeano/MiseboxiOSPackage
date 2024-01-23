@@ -7,9 +7,14 @@
 
 import SwiftUI
 
-struct PostView: View {
-    var post: Postable
-    var body: some View {
+public struct PostView: View {
+    public var post: Postable
+
+    public init(post: Postable) {
+        self.post = post
+    }
+
+    public var body: some View {
         VStack(alignment: .leading, spacing: 10) {
             PostHeader(post: post)
             PostContentView(post: post)
@@ -31,23 +36,27 @@ private func PostContentView(post: Postable) -> some View {
             Text("gig")
         case .recruiters:
             Text("recruiter Post")
+        }
     } else {
         Text("Unknown Collection")
             .foregroundColor(.red) // Display in red text for error
     }
 }
 
+public struct PostHeader: View {
+    public var post: Postable
 
-struct PostHeader: View {
-    var post: Postable
-    
-    var body: some View {
+    public init(post: Postable) {
+        self.post = post
+    }
+
+    public var body: some View {
         HStack(spacing: 10) {
             AvatarView(imageUrl: post.sender.imageUrl, width: 30, height: 30, onSelect: { print("Avatar clicked") })
             
             VStack(alignment: .leading, spacing: 0) {
                 HStack(alignment: .bottom, spacing: 2) {
-                    Text(post.sender.name)
+                    Text(post.sender.username)
                         .font(.subheadline)
                     Text(post.sender.role.uppercased())
                         .font(.system(size: 10))
@@ -63,16 +72,16 @@ struct PostHeader: View {
     }
 }
 
+public struct PostDetailView: View {
+    public var post: Postable
+    @Binding public var navigationPath: NavigationPath
 
+    public init(post: Postable, navigationPath: Binding<NavigationPath>) {
+        self.post = post
+        self._navigationPath = navigationPath
+    }
 
-struct PostDetailView: View {
-    var post: Postable
-    @Binding var navigationPath: NavigationPath
-
-    var body: some View {
-
-        Text("Subject Detail: \(post.sender.name)")
+    public var body: some View {
+        Text("Subject Detail: \(post.sender.username)")
     }
 }
-
-
