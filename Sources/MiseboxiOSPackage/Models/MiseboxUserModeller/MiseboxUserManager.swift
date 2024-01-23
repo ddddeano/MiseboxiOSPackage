@@ -25,4 +25,14 @@ public final class MiseboxUserManager: ObservableObject {
         self.miseboxUser = user
         self.role = role
     }
+    public enum AccountType: String {
+        case anon
+        case email
+        case other
+    }
 }
+public protocol CanVerifyUser {
+    var miseboxUserManager: MiseboxUserManager { get }
+    func verifyUser(with accountType: MiseboxUserManager.AccountType) async throws
+}
+
