@@ -241,13 +241,19 @@ public struct CustomTextFieldStyle: TextFieldStyle {
 public enum TimeType {
     case start, end
 }
-
 public struct AvatarView: View {
     var imageUrl: String
     var width: CGFloat
     var height: CGFloat
     var onSelect: () -> Void
     var hasNewContent: Bool = true
+
+    public init(imageUrl: String, width: CGFloat, height: CGFloat, onSelect: @escaping () -> Void) {
+        self.imageUrl = imageUrl
+        self.width = width
+        self.height = height
+        self.onSelect = onSelect
+    }
 
     public var notificationRing: some View {
         Group {
