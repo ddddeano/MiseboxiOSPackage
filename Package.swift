@@ -8,7 +8,7 @@ import PackageDescription
 let package = Package(
     name: "MiseboxiOSPackage",
     platforms: [
-        .iOS(.v13) // Ensure your platform version is correct
+        .iOS(.v16) // Ensure your platform version is correct
     ],
     products: [
         .library(
