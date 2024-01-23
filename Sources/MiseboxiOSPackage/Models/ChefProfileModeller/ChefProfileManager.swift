@@ -25,4 +25,9 @@ public final class ChefProfileManager: ObservableObject {
     }
 }
     
-    
+public protocol CanChef {
+    var miseboxUserManager: MiseboxUserManager { get }
+    var chefManager: ChefManager { get }
+    func createChef(skip: Bool) async throws
+    func onboardChef() async
+}
