@@ -28,6 +28,7 @@ public final class PostManager {
     public enum PostableCollectionNames: String {
         case chefs = "chefs"
         case gigs = "gigs"
+        case recruiters = "recruiters" // Added 'recruiters' collection
         
         public init?(rawValue: String) {
             switch rawValue {
@@ -35,11 +36,14 @@ public final class PostManager {
                 self = .chefs
             case "gigs":
                 self = .gigs
+            case "recruiters": // Added case for 'recruiters'
+                self = .recruiters
             default:
                 return nil
             }
         }
     }
+
     
     public struct Sender {
         public var id = ""
@@ -111,7 +115,6 @@ public final class PostManager {
         }
     }
     
-    
     public func documentListenerChef(chefId: String, completion: @escaping (Result<ChefManager.Chef, Error>) -> Void) -> ListenerRegistration {
         let chef = ChefManager.Chef()
         return firestoreManager.addDocumentListener(for: chef, completion: completion)
@@ -140,13 +143,12 @@ public final class PostManager {
             }
             var posts: [Postable] = []
             for document in documents {
-                
                 guard let subjectData = document.data()["subject"] as? [String: Any],
                       let collectionNameRaw = subjectData["collection_name"] as? String,
                       let collectionName = PostableCollectionNames(rawValue: collectionNameRaw) else {
                     continue
                 }
-                
+
                 switch collectionName {
                 case .chefs:
                     if let post = PostManager.Chef(documentSnapshot: document) {
@@ -156,10 +158,15 @@ public final class PostManager {
                     if let post = PostManager.Gig(documentSnapshot: document) {
                         posts.append(post)
                     }
+                case .recruiters:
+                    if let post = PostManager.Recruiter(documentSnapshot: document) {
+                        posts.append(post)
+                    }
                 }
             }
-            
+
             completion(.success(posts))
+
         }
     }
     
@@ -185,6 +192,7 @@ public final class PostManager {
     public enum ChefPostType: String, PostType {
         case chefCreated = "chef_created"
         case chefDeleted = "chef_deleted"
+        case empty = ""
         
         public init?(rawValue: String) {
             switch rawValue {
@@ -193,13 +201,15 @@ public final class PostManager {
             case "chef_deleted":
                 self = .chefDeleted
             default:
-                return nil
+                self = .empty
             }
         }
     }
+
     public enum GigPostType: String, PostType {
         case slowGig = "slow_gig"
         case fastGig = "fast_gig"
+        case empty = ""
         
         public init?(rawValue: String) {
             switch rawValue {
@@ -208,8 +218,24 @@ public final class PostManager {
             case "fast_gig":
                 self = .fastGig
             default:
-                return nil
-                
+                self = .empty
+            }
+        }
+    }
+
+    public enum RecruiterPostType: String, PostType {
+        case recruiterCreated = "recruiter_created"
+        case recruiterDeleted = "recruiter_deleted"
+        case empty = ""
+        
+        public init?(rawValue: String) {
+            switch rawValue {
+            case "recruiter_created":
+                self = .recruiterCreated
+            case "recruiter_deleted":
+                self = .recruiterDeleted
+            default:
+                self = .empty
             }
         }
     }

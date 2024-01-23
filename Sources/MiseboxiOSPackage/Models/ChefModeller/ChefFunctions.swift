@@ -54,11 +54,15 @@ extension ChefManager {
         case .chefCreated:
             title = "Welcome \(self.name)"
             body = "Enjoy the Misebox Ecosystem 👋 "
-            image = imageUrl
+            image = self.imageUrl
         case .chefDeleted:
             title = "u Revoir Chef \(self.name)"
             body = "A \(self.name). 👋 Good Luck in the future."
             image = self.imageUrl
+        case .empty:
+            title = "Default Title"
+            body = "Default Body"
+            image = "Default Image"
         }
         
         let sender = PostManager.Sender(id: self.id, name: self.name, role: "Chef", imageUrl: image)

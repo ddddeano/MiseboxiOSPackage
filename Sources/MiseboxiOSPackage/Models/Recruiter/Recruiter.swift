@@ -2,33 +2,32 @@
 //  File.swift
 //  
 //
-//  Created by Daniel Watson on 22.01.24.
+//  Created by Daniel Watson on 23.01.24.
 //
 
 import Foundation
 import FirebaseFirestore
 
-
-extension ChefManager {
+extension RecruiterManager {
     
     public var id: String {
-        return chef.id
+        return recruiter.id
     }
     public var name: String {
-        return chef.name
+        return recruiter.name
     }
-    public var kitchens: [ChefManager.Kitchen] {
-        return chef.kitchens
+    public var kitchens: [Kitchen] {
+        return recruiter.kitchens
     }
-    public var primaryKitchen: ChefManager.Kitchen? {
-        return chef.primaryKitchen
+    public var primaryKitchen: Kitchen? {
+        return recruiter.primaryKitchen
     }
     public var imageUrl: String {
-        chef.imageUrl
+        recruiter.imageUrl
     }
     
-    public final class Chef: ObservableObject, Identifiable, Listenable {
-        public var collectionName = "chefs"
+    public final class Recruiter: ObservableObject, Identifiable, Listenable {
+        public var collectionName = "recruiters"
         
         @Published public var id = ""
         
@@ -72,8 +71,8 @@ extension ChefManager {
             ]
         }
     }
-    public func resetChef() {
-        self.chef = Chef()
+    public func resetRecruiter() {
+        self.recruiter = Recruiter()
         listener?.remove()
     }
 }

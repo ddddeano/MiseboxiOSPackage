@@ -10,7 +10,7 @@ import FirebaseFirestore
 
 class GigsManager {
     
-    public let gigUrl = "https://unsplash.com/photos/a-group-of-people-standing-in-front-of-a-restaurant-k21a9naJr04"
+    public let imageUrl = "https://unsplash.com/photos/a-group-of-people-standing-in-front-of-a-restaurant-k21a9naJr04"
     
     let firestoreManager = FirestoreManager ()
     var postManager = PostManager()
@@ -36,19 +36,39 @@ class GigsManager {
     }
     
     public func addToFeed(postType: PostManager.GigPostType) async throws {
-        // Create a Sender object
-        let sender = PostManager.Sender(id: self.id, name: "userName", role: "User") // Adjust the name and role as needed
+            // Handle the empty case
+            var title: String
+            var body: String
+            var image: String
+            
+            switch postType {
+            case .slowGig:
+                title = "Slow Gig Title"
+                body = "Slow Gig Body"
+                image = self.imageUrl
+            case .fastGig:
+                title = "Fast Gig Title"
+                body = "Fast Gig Body"
+                image = self.imageUrl
+            case .empty:
+                title = "Default Title"
+                body = "Default Body"
+                image = "Default Image"
+            }
 
-        // Assuming you have a way to create subject and content for Gigs similar to Chefs
-        let subject = PostManager.PostSubject(subjectId: self.id, collectionName: "Your_Collection_Name") // Replace with actual collection name
-        let content = PostManager.PostContent(title: "Title", body: "Content", imageUrl: self.gigUrl) // Replace "Title" and "Content" as needed
+            // Create a Sender object
+            let sender = PostManager.Sender(id: self.id, name: "userName", role: "User") // Adjust the name and role as needed
 
-        // Create a Gig feed entry
-        let gigFeedEntry = PostManager.Gig(sender: sender, subject: subject, content: content, postType: postType)
+            // Assuming you have a way to create subject and content for Gigs similar to Chefs
+            let subject = PostManager.PostSubject(subjectId: self.id, collectionName: "Your_Collection_Name") // Replace with actual collection name
+            let content = PostManager.PostContent(title: title, body: body, imageUrl: image) // Replace "Title" and "Content" as needed
 
-        // Add to Firestore
-        try await firestoreManager.createFeedEntry(entry: gigFeedEntry)
-    }
+            // Create a Gig feed entry
+            let gigFeedEntry = PostManager.Gig(sender: sender, subject: subject, content: content, postType: postType)
+
+            // Add to Firestore
+            try await firestoreManager.createFeedEntry(entry: gigFeedEntry)
+        }
 
     public func deleteGig(gigId: String) async throws {
         try await firestoreManager.deleteDocument(collection: "gigs", documentID: gigId)
@@ -60,4 +80,5 @@ class GigsManager {
     }
     
 }
+
 
