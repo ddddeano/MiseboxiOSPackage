@@ -31,6 +31,11 @@ public final class MiseboxUserManager: ObservableObject {
         case other
     }
 }
+public protocol CanMiseboxUser {
+    func verifyMiseboxUser() async
+    func onboardMiseboxUser() async
+}
+
 public protocol CanVerifyUser {
     var miseboxUserManager: MiseboxUserManager { get }
     func verifyUser(with accountType: MiseboxUserManager.AccountType) async throws
