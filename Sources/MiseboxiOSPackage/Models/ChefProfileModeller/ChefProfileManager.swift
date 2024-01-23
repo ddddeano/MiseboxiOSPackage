@@ -8,7 +8,6 @@
 import Foundation
 import FirebaseFirestore
 
-
 public final class ChefProfileManager: ObservableObject {
     
     var firestoreManager = FirestoreManager()

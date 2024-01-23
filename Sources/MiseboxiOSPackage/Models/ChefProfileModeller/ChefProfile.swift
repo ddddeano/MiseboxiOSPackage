@@ -13,8 +13,8 @@ extension ChefProfileManager {
     public var id: String {
         return chefProfile.id
     }
-    public var name: String {
-        return chefProfile.name
+    public var nickname: String {
+        return chefProfile.nickname
     }
     
     public var username: String {
@@ -28,7 +28,7 @@ extension ChefProfileManager {
         public var collectionName = "chef-profiles"
         
         @Published public var id = ""
-        @Published public var name = ""
+        @Published public var nickname = ""
         @Published public var imageUrl = ""
         @Published public var username = ""
         
@@ -48,7 +48,7 @@ extension ChefProfileManager {
         
         public init(chef: ChefManager.Chef) {
             self.id = chef.id
-            self.name = chef.name
+            self.username = chef.username
         }
         
         public required init?(documentSnapshot: DocumentSnapshot) {
@@ -59,7 +59,7 @@ extension ChefProfileManager {
         
         public func update(with data: [String: Any]) {
             
-            self.name = data["name"] as? String ?? ""
+            self.nickname = data["nickname"] as? String ?? ""
             self.imageUrl = data["image_url"] as? String ?? ""
             self.username = data["username"] as? String ?? ""
             
@@ -78,7 +78,7 @@ extension ChefProfileManager {
         
         public func toFirestore() -> [String: Any] {
             [
-                "name": name,
+                "nickname": nickname,
                 "image_url": imageUrl,
                 "username": username,
                 

@@ -13,8 +13,8 @@ extension RecruiterManager {
     public var id: String {
         return recruiter.id
     }
-    public var name: String {
-        return recruiter.name
+    public var username: String {
+        return recruiter.username
     }
     public var kitchens: [Kitchen] {
         return recruiter.kitchens
@@ -31,7 +31,7 @@ extension RecruiterManager {
         
         @Published public var id = ""
         
-        @Published public var name = ""
+        @Published public var username = ""
         @Published public var imageUrl = ""
         
         @Published public var miseboxUser: MiseboxUser? = nil
@@ -47,8 +47,8 @@ extension RecruiterManager {
         }
         
         public func update(with data: [String : Any]) {
-            self.name = data["name"] as? String ?? self.name
-            self.imageUrl = data["image_url"] as? String ?? self.imageUrl
+            self.username = data["username"] as? String ?? ""
+            self.imageUrl = data["image_url"] as? String ?? ""
             
             self.miseboxUser = fireObject(from: data["misebox_user"] as? [String: Any] ?? [:], using: MiseboxUser.init(fromDictionary:))
             self.primaryKitchen = fireObject(from: data["primary_kitchen"] as? [String: Any] ?? [:], using: Kitchen.init(fromDictionary:))
@@ -57,7 +57,7 @@ extension RecruiterManager {
         
         public func toFirestore() -> [String: Any] {
             [
-                "name": name,
+                "username": username,
                 "image_url": imageUrl,
                 "user": miseboxUser?.toFirestore() ?? [:],
                 "primary_kitchen": primaryKitchen?.toFirestore() ?? [:],
@@ -66,7 +66,7 @@ extension RecruiterManager {
         }
         public func toProfile() -> [String: Any] {
             [
-                "name": name,
+                "username": username,
                 "image_url": imageUrl
             ]
         }

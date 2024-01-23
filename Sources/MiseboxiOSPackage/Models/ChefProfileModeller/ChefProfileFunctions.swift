@@ -15,7 +15,7 @@ extension ChefProfileManager {
             print("listning with: \(self.id)" )
             switch result {
             case .success(_):
-                print("Listening to Chef Profile \(self.name) success")
+                print("Listening to Chef Profile \(self.nickname) success")
             case .failure(let error):
                 print("Document listener failed with error: \(error.localizedDescription)")
             }

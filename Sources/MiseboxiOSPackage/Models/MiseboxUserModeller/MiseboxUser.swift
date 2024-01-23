@@ -14,8 +14,8 @@ extension MiseboxUserManager {
     public var id: String {
         return miseboxUser.id
     }
-    public var name: String {
-        return miseboxUser.name
+    public var username: String {
+        return miseboxUser.username
     }
     public var verified: Bool {
         return miseboxUser.verified
@@ -34,7 +34,7 @@ extension MiseboxUserManager {
         public var collectionName = "misebox-users"
         
         @Published public var id = ""
-        @Published public var name = ""
+        @Published public var username = ""
         @Published public var imageUrl = ""
 
         @Published public var verified = false
@@ -50,8 +50,8 @@ extension MiseboxUserManager {
         }
         
         public func update(with data: [String: Any]) {
-            self.name = data["name"] as? String ?? self.name
-            self.imageUrl = data["image_url"] as? String ?? self.imageUrl
+            self.username = data["username"] as? String ?? ""
+            self.imageUrl = data["image_url"] as? String ?? ""
 
             self.verified = data["verified"] as? Bool ?? self.verified
             self.accountProviders = data["account_providers"] as? [String] ?? []
@@ -61,7 +61,7 @@ extension MiseboxUserManager {
         public func toFirestore() -> [String: Any] {
             return [
                 "id": id,
-                "name": name,
+                "username": username,
                 "verified": verified,
                 "account_providers": accountProviders,
                 "roles": roles.map { $0.toFirestore() }

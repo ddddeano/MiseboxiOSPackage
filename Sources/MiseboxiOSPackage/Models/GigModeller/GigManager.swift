@@ -30,6 +30,8 @@ class GigsManager {
         return gig.title
     }
     
+    let username = "sender user name"
+    
     public func addSlowGig(gig: Gig) async throws {
         try await firestoreManager.setDoc(collection: rootCollection, entity: self.gig)
         try await addToFeed(postType: .slowGig)
@@ -57,7 +59,7 @@ class GigsManager {
             }
 
             // Create a Sender object
-            let sender = PostManager.Sender(id: self.id, name: "userName", role: "User") // Adjust the name and role as needed
+            let sender = PostManager.Sender(id: self.id, username: username, role: "User") // Adjust the name and role as needed
 
             // Assuming you have a way to create subject and content for Gigs similar to Chefs
             let subject = PostManager.PostSubject(subjectId: self.id, collectionName: "Your_Collection_Name") // Replace with actual collection name

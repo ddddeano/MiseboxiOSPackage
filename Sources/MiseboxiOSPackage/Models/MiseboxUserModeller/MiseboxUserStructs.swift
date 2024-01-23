@@ -10,22 +10,22 @@ import Foundation
 extension MiseboxUserManager {
     public struct Role {
         public var role: String
-        public var name: String
+        public var username: String
         
-        public init(role: String = "", name: String = "") {
+        public init(role: String = "", username: String = "") {
             self.role = role
-            self.name = name
+            self.username = username
         }
         
         public init?(fromDictionary fire: [String: Any]) {
             guard let role = fire["role"] as? String,
-                  let name = fire["name"] as? String else { return nil }
+                  let username = fire["username"] as? String else { return nil }
             self.role = role
-            self.name = name
+            self.username = username
         }
         
         public func toFirestore() -> [String: Any] {
-            return ["role": role, "name": name]
+            return ["role": role, "username": username]
         }
     }
     

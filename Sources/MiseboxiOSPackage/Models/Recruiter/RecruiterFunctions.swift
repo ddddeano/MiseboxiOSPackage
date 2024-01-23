@@ -9,6 +9,21 @@ import Foundation
 import FirebaseFirestore
 
 extension RecruiterManager {
+    public func checkRecruiterExistsInFirestore() async throws -> Bool {
+        return try await firestoreManager.checkDocumentExists(collection: rootCollection, documentID: self.id)
+    }
+    
+    public func setRecruiter(miseboxUser: MiseboxUserManager.MiseboxUser) async throws {
+        self.recruiter.id = miseboxUser.id
+        self.recruiter.miseboxUser = RecruiterManager.MiseboxUser(fromMiseboxUser: miseboxUser)
+        self.recruiter.imageUrl = miseboxUser.imageUrl
+        self.recruiter.username = miseboxUser.username
+        
+        try await firestoreManager.setDoc(collection: rootCollection, entity: self.recruiter)
+        
+        let newRecruiterProfile = RecruiterProfileManager.RecruiterProfile(recruiter: self.recruiter)
+        
+    }
     
     public func update(data: [String: Any]) async throws {
         firestoreManager.updateDocument(collection: rootCollection, documentID: id, updateData: data)
@@ -22,35 +37,24 @@ extension RecruiterManager {
         self.listener = firestoreManager.addDocumentListener(for: self.recruiter) { result in
             switch result {
             case .success(_):
-                print("Listening to Recruiter \(self.name) success")
+                print("Listening to Recruiter \(self.username) success")
             case .failure(let error):
                 print("Document listener failed with error: \(error.localizedDescription)")
             }
         }
     }
     
-    public func checkRecruiterExistsInFirestore() async throws -> Bool {
-        return try await firestoreManager.checkDocumentExists(collection: rootCollection, documentID: self.id)
-    }
     public func deleteRecruiter() async throws {
-        // Delete recruiter document
         try await firestoreManager.deleteDocument(collection: rootCollection, documentID: self.id)
-        
-        // Delete from recruiter-profiles
         try await firestoreManager.deleteDocument(collection: "recruiter-profiles", documentID: self.id)
-        
-        // Remove role from misebox user
         await firestoreManager.updateDocumentDependant(
               collection: "misebox-users",
               documentID: self.id,
               field: "roles",
-              value: "recruiter", // Adjust the role as needed
+              value: "recruiter",
               operation: .arrayRemove
           )
-        
-        // Add logic to handle additional cleanup if needed for recruiters
-        
-        // Add to feed
+
         try await addToFeed(postType: .recruiterDeleted)
     }
 
@@ -61,20 +65,20 @@ extension RecruiterManager {
         
         switch postType {
         case .recruiterCreated:
-            title = "Welcome \(self.name)"
+            title = "Welcome \(self.username)"
             body = "Join the Misebox network and find great opportunities! 👋 "
             image = imageUrl
         case .recruiterDeleted:
-            title = "Farewell \(self.name)"
-            body = "Goodbye, \(self.name). 👋 We appreciate your contributions."
+            title = "Farewell \(self.username)"
+            body = "Goodbye, \(self.username). 👋 We appreciate your contributions."
             image = self.imageUrl
-        case .empty: // Handle the empty case
+        case .empty:
                 title = "Default Title"
                 body = "Default Body"
                 image = "Default Image"
             }
         
-        let sender = PostManager.Sender(id: self.id, name: self.name, role: "Recruiter", imageUrl: image)
+        let sender = PostManager.Sender(id: self.id, username: self.username, role: "Recruiter", imageUrl: image)
         let subject = PostManager.PostSubject(subjectId: self.id, collectionName: rootCollection)
         let content = PostManager.PostContent(title: title, body: body, imageUrl: image)
         

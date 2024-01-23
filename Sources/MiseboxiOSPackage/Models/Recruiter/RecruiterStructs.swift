@@ -11,30 +11,30 @@ extension RecruiterManager {
     public struct MiseboxUser: Identifiable {
         
         public var id: String
-        public var name: String
+        public var username: String
         
-        public init(id: String = "", name: String = "") {
+        public init(id: String = "", username: String = "") {
             self.id = id
-            self.name = name
+            self.username = username
         }
         
         public init?(fromDictionary fire: [String: Any]) {
             guard let id = fire["id"] as? String,
-                  let name = fire["name"] as? String else { return nil }
+                  let username = fire["username"] as? String else { return nil }
             self.id = id
-            self.name = name
+            self.username = username
         }
         public init(fromMiseboxUser miseboxUser: MiseboxUserManager.MiseboxUser) {
             self.id = miseboxUser.id
-            self.name = miseboxUser.name
+            self.username = miseboxUser.username
         }
         
         public func toFirestore() -> [String: Any] {
-            return ["id": id, "name": name]
+            return ["id": id, "username": username]
         }
     }
     public func updateMiseboxUserRole(miseboxUserId: String) async {
-        let roleData = ["role": "recruiter", "name": name]
+        let roleData = ["role": "recruiter", "username": username]
         await firestoreManager.updateDocumentDependant(
             collection: "misebox-users",
             documentID: miseboxUserId,

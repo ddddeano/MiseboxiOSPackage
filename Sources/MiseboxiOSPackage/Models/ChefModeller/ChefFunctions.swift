@@ -16,19 +16,16 @@ extension ChefManager {
         // Setting the chef's user details
         self.chef.id = miseboxUser.id
         self.chef.miseboxUser = ChefManager.MiseboxUser(fromMiseboxUser: miseboxUser)
-        self.chef.imageUrl = "https://firebasestorage.googleapis.com:443/v0/b/misebox-78f9c.appspot.com/o/avatars%2FNewChef.jpg?alt=media&token=401c6a03-bc6f-4ecd-8d3b-e2ec96bc6aed"
-        
-        // TODO image = misebox.image
-        
-        // Saving chef details to Firestore
+        self.chef.imageUrl = miseboxUser.imageUrl
+        self.chef.username = miseboxUser.username
+                
         try await firestoreManager.setDoc(collection: rootCollection, entity: self.chef)
         
-        // Creating and saving chef profile
         let newChefProfile = ChefProfileManager.ChefProfile(chef: self.chef)
         try await firestoreManager.setDoc(collection: "chef-profiles", entity: newChefProfile)
         print("[ChefManager] creating chef profile with \(newChefProfile)")
         // Adding role to MiseboxUser
-        let role =  MiseboxUserManager.Role(role: "chef", name: name)
+        let role =  MiseboxUserManager.Role(role: "chef", username: username)
         
         await firestoreManager.updateDocumentDependant(
             collection: "misebox-users",
@@ -52,12 +49,12 @@ extension ChefManager {
         
         switch postType {
         case .chefCreated:
-            title = "Welcome \(self.name)"
+            title = "Welcome \(self.username)"
             body = "Enjoy the Misebox Ecosystem 👋 "
             image = self.imageUrl
         case .chefDeleted:
-            title = "u Revoir Chef \(self.name)"
-            body = "A \(self.name). 👋 Good Luck in the future."
+            title = "u Revoir Chef \(self.username)"
+            body = "A \(self.username). 👋 Good Luck in the future."
             image = self.imageUrl
         case .empty:
             title = "Default Title"
@@ -65,7 +62,7 @@ extension ChefManager {
             image = "Default Image"
         }
         
-        let sender = PostManager.Sender(id: self.id, name: self.name, role: "Chef", imageUrl: image)
+        let sender = PostManager.Sender(id: self.id, username: self.username, role: "Chef", imageUrl: image)
         let subject = PostManager.PostSubject(subjectId: self.id, collectionName: rootCollection)
         let content = PostManager.PostContent(title: title, body: body, imageUrl: image)
         
@@ -79,7 +76,7 @@ extension ChefManager {
         self.listener = firestoreManager.addDocumentListener(for: self.chef) { result in
             switch result {
             case .success(_):
-                print("Listening to Chef \(self.name) success")
+                print("Listening to Chef \(self.username) success")
             case .failure(let error):
                 print("Document listener failed with error: \(error.localizedDescription)")
             }
@@ -95,9 +92,14 @@ extension ChefManager {
     }
     
     public func deleteChef() async throws {
-        // await miseboxUserManager.removeRole()
-        // archive
         try await firestoreManager.deleteDocument(collection: rootCollection, documentID: self.id)
+        try await firestoreManager.deleteDocument(collection: "chef-profiles", documentID: self.id)
+        await firestoreManager.updateDocumentDependant(
+            collection: "misebox-users",
+            documentID: self.id,
+            field: "roles",
+            value: "chef",
+            operation: .arrayRemove)
         try await addToFeed(postType: .chefDeleted)
     }
 }

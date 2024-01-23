@@ -47,26 +47,26 @@ public final class PostManager {
     
     public struct Sender {
         public var id = ""
-        public var name = ""
+        public var username = ""
         public var role = ""
         public var imageUrl = ""
         
         public init(fromDictionary fire: [String: Any]? = nil) {
-            self.id = fire?["id"] as? String ?? id
-            self.name = fire?["name"] as? String ?? name
-            self.role = fire?["role"] as? String ?? role
-            self.imageUrl = fire?["image_url"] as? String ?? imageUrl
+            self.id = fire?["id"] as? String ?? ""
+            self.username = fire?["name"] as? String ?? ""
+            self.role = fire?["role"] as? String ?? ""
+            self.imageUrl = fire?["image_url"] as? String ?? ""
         }
         
-        public init(id: String, name: String, role: String, imageUrl: String = "") {
+        public init(id: String, username: String, role: String, imageUrl: String = "") {
             self.id = id
-            self.name = name
+            self.username = username
             self.role = role
             self.imageUrl = imageUrl
         }
         
         public func toFirestore() -> [String: Any] {
-            ["id": id, "name": name, "role": role, "image_url": imageUrl]
+            ["id": id, "username": username, "role": role, "image_url": imageUrl]
         }
     }
     
