@@ -1,26 +1,21 @@
-//
-//  File.swift
-//  
-//
-//  Created by Daniel Watson on 24.01.24.
-//
+// File.swift
 
 import Foundation
 import SwiftUI
 import FirebaseAuth
 
-class MiseboxUserProfileViewModel: CanMiseboxUser, ObservableObject {
-    var email = "fire119@fire.com"
-    var password = "Hello1234"
+public class MiseboxUserProfileViewModel: CanMiseboxUser, ObservableObject {
+    public var email = "fire119@fire.com"
+    public var password = "Hello1234"
     
-    let authenticationManager = AuthenticationManager()
-    let miseboxUserManager: MiseboxUserManager
+    public let authenticationManager = AuthenticationManager()
+    public let miseboxUserManager: MiseboxUserManager
 
-    init(miseboxUserManager: MiseboxUserManager) {
+    public init(miseboxUserManager: MiseboxUserManager) {
         self.miseboxUserManager = miseboxUserManager
     }
     
-    func onboardMiseboxUser() async {
+    public func onboardMiseboxUser() async {
         do {
             if try await miseboxUserManager.checkMiseboxUserExistsInFirestore() {
                 miseboxUserManager.documentListener { result in
@@ -39,7 +34,7 @@ class MiseboxUserProfileViewModel: CanMiseboxUser, ObservableObject {
         }
     }
     
-    func verifyMiseboxUser(with accountType: MiseboxUserManager.AccountType = .email) async throws {
+    public func verifyMiseboxUser(with accountType: MiseboxUserManager.AccountType = .email) async throws {
         print("MiseboxUserProfileViewModel[verifyUser] Verifying user with account type: \(accountType.rawValue)")
         do {
             switch accountType {
@@ -58,7 +53,7 @@ class MiseboxUserProfileViewModel: CanMiseboxUser, ObservableObject {
         }
     }
     
-    func signOut() {
+    public func signOut() {
         do {
             try Auth.auth().signOut()
             miseboxUserManager.resetMiseboxUser()
@@ -68,11 +63,11 @@ class MiseboxUserProfileViewModel: CanMiseboxUser, ObservableObject {
     }
 }
 
-struct MiseboxUserProfileDashboard: View {
-    @EnvironmentObject var miseboxUser: MiseboxUserManager.MiseboxUser
-    @StateObject var vm: MiseboxUserProfileViewModel
+public struct MiseboxUserProfileDashboard: View {
+    @EnvironmentObject public var miseboxUser: MiseboxUserManager.MiseboxUser
+    @StateObject public var vm: MiseboxUserProfileViewModel
 
-    var body: some View {
+    public var body: some View {
         VStack {
             Button("Sign Out") {
                 vm.signOut()
@@ -89,10 +84,10 @@ struct MiseboxUserProfileDashboard: View {
     }
 }
 
-struct UserInformationSection: View {
-    @EnvironmentObject var miseboxUser: MiseboxUserManager.MiseboxUser
+public struct UserInformationSection: View {
+    @EnvironmentObject public var miseboxUser: MiseboxUserManager.MiseboxUser
 
-    var body: some View {
+    public var body: some View {
         Section(header: Text("User Information")) {
             TextField("Name", text: $miseboxUser.username)
             Text("User ID: \(miseboxUser.id)")
@@ -101,10 +96,14 @@ struct UserInformationSection: View {
     }
 }
 
-struct AccountProvidersSection: View {
-    var accountProviders: [String]
+public struct AccountProvidersSection: View {
+    public var accountProviders: [String]
 
-    var body: some View {
+    public init(accountProviders: [String]) {
+        self.accountProviders = accountProviders
+    }
+
+    public var body: some View {
         Section(header: Text("Account Providers")) {
             ForEach(accountProviders, id: \.self) { provider in
                 Text(provider)
