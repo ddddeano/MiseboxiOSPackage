@@ -67,6 +67,10 @@ public struct MiseboxUserProfileDashboard: View {
     @EnvironmentObject public var miseboxUser: MiseboxUserManager.MiseboxUser
     @StateObject public var vm: MiseboxUserProfileViewModel
 
+    public init(vm: MiseboxUserProfileViewModel) { // Make the initializer public
+           self._vm = StateObject(wrappedValue: vm)
+       }
+    
     public var body: some View {
         VStack {
             Button("Sign Out") {
