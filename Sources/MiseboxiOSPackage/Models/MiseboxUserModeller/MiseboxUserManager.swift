@@ -40,8 +40,8 @@ public final class MiseboxUserManager: ObservableObject {
     @Published public var miseboxUser: MiseboxUser
     @Published public var miseboxUserProfile: MiseboxUserProfile
     
-    public init(user: MiseboxUser, miseboxUserProfile: MiseboxUserProfile, role: SessionManager.UserRole) {
-        self.miseboxUser = user
+    public init(miseboxUser: MiseboxUser, miseboxUserProfile: MiseboxUserProfile, role: SessionManager.UserRole) {
+        self.miseboxUser = miseboxUser
         self.miseboxUserProfile = miseboxUserProfile
         self.role = role
     }
