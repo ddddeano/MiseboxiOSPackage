@@ -32,7 +32,7 @@ extension RecruiterProfileManager {
         @Published public var username = ""
         
         // Object (Custom objects)
-        @Published public var companyName = CompanyName()
+        //@Published public var companyName = CompanyName()
         @Published public var aboutUs = AboutUs()
         @Published public var contactInfo = ContactInfo()
         
@@ -58,7 +58,7 @@ extension RecruiterProfileManager {
             self.imageUrl = data["image_url"] as? String ?? ""
             self.username = data["username"] as? String ?? ""
             
-            self.companyName = fireObject(from: data["company_name"] as? [String: Any] ?? [:], using: CompanyName.init) ?? CompanyName()
+           // self.companyName = fireObject(from: data["company_name"] as? [String: Any] ?? [:], using: CompanyName.init) ?? CompanyName()
             self.aboutUs = fireObject(from: data["about_us"] as? [String: Any] ?? [:], using: AboutUs.init) ?? AboutUs()
             self.contactInfo = fireObject(from: data["contact_info"] as? [String: Any] ?? [:], using: ContactInfo.init) ?? ContactInfo()
             
@@ -72,7 +72,7 @@ extension RecruiterProfileManager {
                 "username": username,
                 
                 // Object
-                "company_name": companyName.toFirestore(),
+                //"company_name": companyName.toFirestore(),
                 "about_us": aboutUs.toFirestore(),
                 "contact_info": contactInfo.toFirestore(),
                 

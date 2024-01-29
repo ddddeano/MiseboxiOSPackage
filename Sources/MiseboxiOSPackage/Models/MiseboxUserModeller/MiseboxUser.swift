@@ -1,45 +1,26 @@
 //
-//  File.swift
-//  
+//  MiseboxUser.swift
+//
 //
 //  Created by Daniel Watson on 22.01.24.
 //
 
 import Foundation
-import Firebase
+import FirebaseFirestore
+
+import Foundation
 import FirebaseFirestore
 
 extension MiseboxUserManager {
     
-    public var id: String {
-        return miseboxUser.id
-    }
-    public var username: String {
-        return miseboxUser.username
-    }
-    public var verified: Bool {
-        return miseboxUser.verified
-    }
-    public var accountProviders: [String] {
-        return miseboxUser.accountProviders
-    }
-    public var roles: [AppRole] {
-        return miseboxUser.roles
-    }
-    public var imageUrl: String {
-        return miseboxUser.imageUrl
-    }
-    
     public final class MiseboxUser: ObservableObject, Identifiable, Listenable {
         public var collectionName = "misebox-users"
-        
+                
         @Published public var id = ""
         @Published public var username = ""
         @Published public var imageUrl = ""
-
         @Published public var verified = false
-        @Published public var accountProviders: [String] = []
-        @Published public var roles: [AppRole] = []
+        @Published public var userRoles: [UserRole] = []
         
         public init() {}
 
@@ -52,24 +33,18 @@ extension MiseboxUserManager {
         public func update(with data: [String: Any]) {
             self.username = data["username"] as? String ?? ""
             self.imageUrl = data["image_url"] as? String ?? ""
-
-            self.verified = data["verified"] as? Bool ?? self.verified
-            self.accountProviders = data["account_providers"] as? [String] ?? []
-            self.roles = fireArray(from: data["roles"] as? [[String: Any]] ?? [], using: AppRole.init(fromDictionary:))
+            self.verified = data["verified"] as? Bool ?? false
+            self.userRoles = fireArray(from: data["user_roles"] as? [[String: Any]] ?? [], using: UserRole.init(fromDictionary:))
         }
         
         public func toFirestore() -> [String: Any] {
-            return [
-                "id": id,
+            [
                 "username": username,
+                "image_url": imageUrl,
                 "verified": verified,
-                "account_providers": accountProviders,
-                "roles": roles.map { $0.toFirestore() }
+                "user_roles": userRoles.map { $0.toFirestore() }
             ]
         }
     }
-    public func resetMiseboxUser() {
-        self.miseboxUser = MiseboxUser()
-        listener?.remove()
-    }
 }
+

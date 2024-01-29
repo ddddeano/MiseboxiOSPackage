@@ -1,56 +1,81 @@
 //
-//  File.swift
-//  
+//  ChefStructures.swift
+//
 //
 //  Created by Daniel Watson on 22.01.24.
 //
 
 import Foundation
-//
-//  ChefProfileStructures.swift
-//  Chefs
-//
-//  Created by Daniel Watson on 18.01.24.
-//
-// 1. FullNameEdit
-// 2. NationalityEdit
-// 3. CVEdit
-// 4. GalleryImagesEdit
-// 5. PreviousEmploymentsEdit
-// 6. QualificationsEdit
-// 7. SpokenLanguagesEdit
-// 8. AvatarEdit
 
-extension ChefProfileManager {
+extension ChefManager {
     
-    // MARK: - 1. FullName / store as object
-    public struct FullName {
-        public var first = ""
-        public var middle = ""
-        public var last = ""
+    // MARK: - Chef Structures
+
+    public struct MiseboxUser: Identifiable {
         
-        public init() {}
+        public var id = ""
+        public var username = ""
+        
+        public init () {}
+        
         public init?(fromDictionary fire: [String: Any]) {
-            self.first = fire["first"] as? String ?? ""
-            self.middle = fire["middle"] as? String ?? ""
-            self.last = fire["last"] as? String ?? ""
+            guard let id = fire["id"] as? String,
+                  let username = fire["username"] as? String else { return nil }
+            self.id = id
+            self.username = username
+        }
+        public init(miseboxUser: MiseboxUserManager.MiseboxUser) {
+            self.id = miseboxUser.id
+            self.username = miseboxUser.username
         }
         
         public func toFirestore() -> [String: Any] {
-            [
-                "first": first,
-                "middle": middle,
-                "last": last
-            ]
-        }
-        
-        public var formatted: String {
-            [first, middle, last].filter { !$0.isEmpty }.joined(separator: " ")
+            return ["id": id, "username": username]
         }
     }
     
-    // MARK: - 2. Nationality / store as object
+    public struct Kitchen: Identifiable {
+        public var id = ""
+        public var name = ""
+        
+        public init() {}
+        
+        public init?(fromDictionary fire: [String: Any]) {
+            self.id = fire["id"] as? String ?? ""
+            self.name = fire["name"] as? String ?? ""
+        }
+        public init(kitchen: KitchenManager.Kitchen) {
+            self.id = kitchen.id
+            self.name = kitchen.name
+        }
+        public func toFirestore() -> [String: Any] {
+            return ["id": id, "name": name]
+        }
+    }
     
+    
+    // MARK: - Chef-Profile Structures
+    public struct GeneralInfo {
+        public var name = ""
+        public var username = ""
+        public var imageUrl = ""
+        public var nickname = ""
+        
+        public init() {}
+        
+        public init(fromDictionary fire: [String: Any]) {
+            self.name = fire["name"] as? String ?? ""
+            self.username = fire["username"] as? String ?? ""
+            self.imageUrl = fire["image_url"] as? String ?? ""
+            self.nickname = fire["nickname"] as? String ?? ""
+        }
+        
+        
+        public func toFirestore() -> [String: Any] {
+            ["name": name, "username": username, "image_url": imageUrl, "nickname": nickname]
+        }
+    }
+        
     public struct Nationality {
         public var country = ""
         public var flagCode = ""
@@ -63,14 +88,10 @@ extension ChefProfileManager {
         }
         
         public func toFirestore() -> [String: Any] {
-            [
-                "country": country,
-                "flag_code": flagCode
-            ]
+            ["country": country, "flag_code": flagCode]
         }
     }
     
-    // MARK: - 3. about me / store as object
     public struct AboutMeBio {
         public var aboutMe = ""
         public var bio = ""
@@ -83,35 +104,29 @@ extension ChefProfileManager {
         }
         
         public func toFirestore() -> [String: Any] {
-            [
-                "about_me": aboutMe,
-                "bio": bio
-            ]
+            ["about_me": aboutMe, "bio": bio]
         }
     }
     
-    // MARK: - 4. GalleryImage / store as array
     public struct GalleryImage: Identifiable {
         public let id = UUID()
-        public var name = ""
-        public var imageUrl = ""
+        public var name: String
+        public var imageUrl: String
         
-        public init() {}
-        
-        public init?(fromDictionary fire: [String: Any]) {
+        public init(name: String, imageUrl: String) {
+            self.name = name
+            self.imageUrl = imageUrl
+        }
+        public init(fromDictionary fire: [String: Any]) {
             self.name = fire["name"] as? String ?? ""
             self.imageUrl = fire["image_url"] as? String ?? ""
         }
         
         public func toFirestore() -> [String: Any] {
-            [
-                "name": name,
-                "image_url": imageUrl
-            ]
+            ["id": id.uuidString, "name": name, "image_url": imageUrl]
         }
     }
     
-    // MARK: - 7. PreviousEmployment / store as array
     public struct PreviousEmployment: Identifiable {
         public let id = UUID()
         public var employerName = ""
@@ -133,16 +148,10 @@ extension ChefProfileManager {
             !employerName.isEmpty && !role.isEmpty
         }
         public func toFirestore() -> [String: Any] {
-            [
-                "employer_name": employerName,
-                "role": role,
-                "start_date": startDate,
-                "end_date": endDate,
-                "description": description
-            ]
+            ["id": id.uuidString, "employer_name": employerName, "role": role, "start_date": startDate, "end_date": endDate, "description": description]
         }
     }
-    // MARK: - 6. Qualification / store as array
+    
     public struct Qualification: Identifiable {
         public let id = UUID()
         public var docURL = ""
@@ -163,16 +172,10 @@ extension ChefProfileManager {
         }
         
         public func toFirestore() -> [String: Any] {
-            [
-                "doc_url": docURL,
-                "institution": institution,
-                "name": name,
-                "level": level
-            ]
+            ["id": id.uuidString, "doc_url": docURL, "institution": institution, "name": name, "level": level]
         }
     }
     
-    // MARK: - 7. SpokenLanguage / store as array
     public struct SpokenLanguage: Identifiable {
         public let id = UUID()
         public var lang = ""
@@ -186,10 +189,7 @@ extension ChefProfileManager {
         }
         
         public func toFirestore() -> [String: Any] {
-            [
-                "lang": lang,
-                "level": level
-            ]
+            ["id": id.uuidString, "lang": lang, "level": level]
         }
     }
 }

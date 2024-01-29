@@ -19,7 +19,7 @@ extension RecruiterManager {
         self.recruiter.imageUrl = miseboxUser.imageUrl
         self.recruiter.username = miseboxUser.username
         
-        try await firestoreManager.setDoc(collection: rootCollection, entity: self.recruiter)
+        //try await firestoreManager.setDoc(collection: rootCollection, entity: self.recruiter)
         
         let newRecruiterProfile = RecruiterProfileManager.RecruiterProfile(recruiter: self.recruiter)
         

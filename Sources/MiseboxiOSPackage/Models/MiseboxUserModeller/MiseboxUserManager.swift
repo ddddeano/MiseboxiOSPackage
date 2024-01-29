@@ -1,7 +1,5 @@
 //
-//  File.swift
-//  
-//
+//  MiseboxUserManager.swift
 //  Created by Daniel Watson on 22.01.24.
 //
 
@@ -10,30 +8,83 @@ import FirebaseFirestore
 
 public final class MiseboxUserManager: ObservableObject {
     public var role: SessionManager.UserRole
-    
     let firestoreManager = FirestoreManager()
-    var rootCollection = "misebox-users"
+    
+    public enum MiseboxUserDocCollection: String {
+        case miseboxUser, miseboxUserProfile
+
+        func collection() -> String {
+            switch self {
+            case .miseboxUser:
+                return "misebox-users"
+            case .miseboxUserProfile:
+                return "misebox-user-profiles"
+            }
+        }
+
+        func doc() -> String {
+            switch self {
+            case .miseboxUser:
+                return "misebox-user"
+            case .miseboxUserProfile:
+                return "misebox-user-profile"
+            }
+        }
+    }
     
     public var listener: ListenerRegistration?
     deinit {
         listener?.remove()
     }
-
-    @Published public var miseboxUser: MiseboxUser
     
-    public init(user: MiseboxUser, role: SessionManager.UserRole) {
+    @Published public var miseboxUser: MiseboxUser
+    @Published public var miseboxUserProfile: MiseboxUserProfile
+    
+    public init(user: MiseboxUser, miseboxUserProfile: MiseboxUserProfile, role: SessionManager.UserRole) {
         self.miseboxUser = user
+        self.miseboxUserProfile = miseboxUserProfile
         self.role = role
     }
-    public enum AccountType: String {
-        case anon
-        case email
-        case other
+    
+    public func resetMiseboxUser() {
+        self.miseboxUser = MiseboxUser()
+        self.miseboxUserProfile = MiseboxUserProfile()
+        listener?.remove()
+    }
+    
+    public enum UserDependantDocCollection: String, CaseIterable {
+        case chef, recruiter
+
+        func collection() -> String {
+            switch self {
+            case .chef:
+                return "chefs"
+            case .recruiter:
+                return "recruiters"
+            }
+        }
+        func doc() -> String {
+            switch self {
+            case .chef:
+                return "chef"
+            case .recruiter:
+                return "recruiter"
+            }
+        }
+    }
+
+    public enum Role: String {
+           case chef = "chef"
+           case recruiter = "recruiter"
+       }
+    
+    public enum AccountAuthenticationMethod: String {
+        case anon, email, other
     }
 }
 public protocol CanMiseboxUser {
     var authenticationManager: AuthenticationManager { get }
     var miseboxUserManager: MiseboxUserManager { get }
-    func verifyMiseboxUser(with accountType: MiseboxUserManager.AccountType) async throws
+    func verifyMiseboxUser(with accountType: MiseboxUserManager.AccountAuthenticationMethod) async throws
     func onboardMiseboxUser() async
 }

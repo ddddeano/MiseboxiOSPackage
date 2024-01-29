@@ -40,8 +40,8 @@ public class FirestoreManager {
         }
     }
     
-    public func setDoc<T: FirestoreEntity>(collection: String, entity: T, merge: Bool = false) async throws {
-        let docRef = db.collection(collection).document(entity.id)
+    public func setDoc<T: FirestoreEntity>(inCollection: String, entity: T, merge: Bool = false) async throws {
+        let docRef = db.collection(inCollection).document(entity.id)
         try await docRef.setData(entity.toFirestore(), merge: merge)
     }
     

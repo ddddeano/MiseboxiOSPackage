@@ -16,9 +16,12 @@ public class MiseboxUserProfileViewModel: CanMiseboxUser, ObservableObject {
     }
     
     public func onboardMiseboxUser() async {
+        
+        let ref: MiseboxUserManager.MiseboxUserDocCollection = .miseboxUser
+        
         do {
-            if try await miseboxUserManager.checkMiseboxUserExistsInFirestore() {
-                miseboxUserManager.documentListener { result in
+            if try await miseboxUserManager.checkMiseboxUserExistsInFirestore(doc: ref) {
+                miseboxUserManager.documentListener(for: ref) { result in
                     switch result {
                     case .success(_):
                         print("Success listening to document")
@@ -34,14 +37,14 @@ public class MiseboxUserProfileViewModel: CanMiseboxUser, ObservableObject {
         }
     }
     
-    public func verifyMiseboxUser(with accountType: MiseboxUserManager.AccountType = .email) async throws {
+    public func verifyMiseboxUser(with accountType: MiseboxUserManager.AccountAuthenticationMethod = .email) async throws {
         print("MiseboxUserProfileViewModel[verifyUser] Verifying user with account type: \(accountType.rawValue)")
         do {
             switch accountType {
             case .email:
-                self.miseboxUserManager.miseboxUser.accountProviders = [accountType.rawValue]
+                self.miseboxUserManager.miseboxUserProfile.accountProviders = [accountType.rawValue]
                 try await authenticationManager.linkEmail(email: email, password: password)
-                try await miseboxUserManager.setMiseboxUser()
+                try await miseboxUserManager.setMiseboxUserAndCreateProfile()
                 await onboardMiseboxUser()
             case .other, .anon:
                 // Handle other or anonymous login types if needed
@@ -64,10 +67,11 @@ public class MiseboxUserProfileViewModel: CanMiseboxUser, ObservableObject {
 }
 
 public struct MiseboxUserProfileDashboard: View {
-    @EnvironmentObject public var miseboxUser: MiseboxUserManager.MiseboxUser
+    @EnvironmentObject private var miseboxUser: MiseboxUserManager.MiseboxUser
+    @EnvironmentObject private var miseboxUserProfile: MiseboxUserManager.MiseboxUserProfile
     @StateObject public var vm: MiseboxUserProfileViewModel
 
-    public init(vm: MiseboxUserProfileViewModel) { // Make the initializer public
+    public init(vm: MiseboxUserProfileViewModel) { 
            self._vm = StateObject(wrappedValue: vm)
        }
     
@@ -78,7 +82,7 @@ public struct MiseboxUserProfileDashboard: View {
             }
             Form {
                 UserInformationSection()
-                AccountProvidersSection(accountProviders: miseboxUser.accountProviders)
+                AccountProvidersSection(accountProviders: miseboxUserProfile.accountProviders)
 
                 if !miseboxUser.verified {
                     VerifyUserView(vm: vm, isOnboarding: false)

@@ -1,43 +1,72 @@
 //
-//  File.swift
-//  
+//  ChefManagerFunctions.swift
+//
 //
 //  Created by Daniel Watson on 22.01.24.
 //
 
 import Foundation
+
 extension ChefManager {
-    public func checkChefExistsInFirestore() async throws -> Bool {
-        return try await firestoreManager.checkDocumentExists(collection: rootCollection, documentID: self.id)
+    
+    public func checkDocumentExistsInFirestore(doc: ChefDocCollection) async throws -> Bool {
+        return try await firestoreManager.checkDocumentExists(collection: doc.collection(), documentID: self.id)
     }
     
-
-    public func setChef(miseboxUser: MiseboxUserManager.MiseboxUser) async throws {
-        // Setting the chef's user details
-        self.chef.id = miseboxUser.id
-        self.chef.miseboxUser = ChefManager.MiseboxUser(fromMiseboxUser: miseboxUser)
-        self.chef.imageUrl = miseboxUser.imageUrl
-        self.chef.username = miseboxUser.username
-                
-        try await firestoreManager.setDoc(collection: rootCollection, entity: self.chef)
+    public func setChefAndCreateProfile(miseboxUserManager: MiseboxUserManager) async throws {
         
-        let newChefProfile = ChefProfileManager.ChefProfile(chef: self.chef)
-        try await firestoreManager.setDoc(collection: "chef-profiles", entity: newChefProfile)
-        print("[ChefManager] creating chef profile with \(newChefProfile)")
-        // Adding role to MiseboxUser
-        let role =  MiseboxUserManager.AppRole(role: "chef", username: username)
+        // prime chef with data from MBU, TODO probably move this to a part of the onboarding process
+        self.chef.miseboxUser = miseboxUserManager.toChef
+        self.chef.name = miseboxUserManager.name
+        self.chef.generalInfo.username = miseboxUserManager.username
+        self.chef.generalInfo.imageUrl = miseboxUserManager.imageUrl
         
-        await firestoreManager.updateDocumentDependant(
-            collection: "misebox-users",
-            documentID: miseboxUser.id,
-            field: "roles",
-            value: role.toFirestore(),
-            operation: .arrayUnion
-        )
+        try await firestoreManager.setDoc(inCollection: ChefDocCollection.chef.collection(), entity: self.chef)
+        
+        self.chefProfile.gallery.append(GalleryImage(name: "default", imageUrl: imageUrl))
+        
+        // id should already be primed ((this would be the sam place where we fix up the TODO above))
+        try await firestoreManager.setDoc(inCollection: ChefDocCollection.chefProfile.collection(), entity: self.chefProfile)
+        
+        // Update misebox users
         
         try await addToFeed(postType: .chefCreated)
         
         print("Chef created with ID: \(self.chef.id)")
+    }
+    
+    public func documentListener(for doc: ChefDocCollection, completion: @escaping (Result<Void, Error>) -> Void) {
+        switch doc {
+        case .chef:
+            self.listener = firestoreManager.addDocumentListener(for: self.chef) { result in
+                switch result {
+                case .success(_):
+                    print("Listening to Chef success")
+                case .failure(let error):
+                    print("Chef document listener failed with error: \(error.localizedDescription)")
+                }
+            }
+            
+        case .chefProfile:
+            self.listener = firestoreManager.addDocumentListener(for: self.chefProfile) { result in
+                switch result {
+                case .success(_):
+                    print("Listening to Chef Profile success")
+                case .failure(let error):
+                    print("Chef Profile document listener failed with error: \(error.localizedDescription)")
+                }
+            }
+        }
+    }
+    
+    
+    public func collectionListener(for collection: ChefDocCollection, completion: @escaping (Result<[Chef], Error>) -> Void) {
+        switch collection {
+        case .chef:
+            self.listener = firestoreManager.addCollectionListener(collection: collection.collection(), completion: completion)
+        case .chefProfile:
+            self.listener = firestoreManager.addCollectionListener(collection: collection.collection(), completion: completion)
+        }
     }
     
     
@@ -62,8 +91,8 @@ extension ChefManager {
             image = "Default Image"
         }
         
-        let sender = PostManager.Sender(id: self.id, username: self.username, role: "Chef", imageUrl: image)
-        let subject = PostManager.PostSubject(subjectId: self.id, collectionName: rootCollection)
+        let sender = PostManager.Sender(id: self.id, username: self.username, role: ChefDocCollection.chef.doc(), imageUrl: image)
+        let subject = PostManager.PostSubject(subjectId: self.id, collectionName: ChefDocCollection.chef.collection())
         let content = PostManager.PostContent(title: title, body: body, imageUrl: image)
         
         let chefFeedEntry = PostManager.Chef(sender: sender, subject: subject, content: content, postType: postType)
@@ -71,35 +100,5 @@ extension ChefManager {
         try await firestoreManager.createFeedEntry(entry: chefFeedEntry)
     }
     
-    
-    public func documentListener() {
-        self.listener = firestoreManager.addDocumentListener(for: self.chef) { result in
-            switch result {
-            case .success(_):
-                print("Listening to Chef \(self.username) success")
-            case .failure(let error):
-                print("Document listener failed with error: \(error.localizedDescription)")
-            }
-        }
-    }
-    
-    public func collectionListener(completion: @escaping (Result<[Chef], Error>) -> Void) {
-        self.listener = firestoreManager.addCollectionListener(collection: rootCollection, completion: completion)
-    }
-    
-    public func update(data: [String: Any]) async throws  {
-        firestoreManager.updateDocument(collection: rootCollection, documentID: id, updateData: data)
-    }
-    
-    public func deleteChef() async throws {
-        try await firestoreManager.deleteDocument(collection: rootCollection, documentID: self.id)
-        try await firestoreManager.deleteDocument(collection: "chef-profiles", documentID: self.id)
-        await firestoreManager.updateDocumentDependant(
-            collection: "misebox-users",
-            documentID: self.id,
-            field: "roles",
-            value: "chef",
-            operation: .arrayRemove)
-        try await addToFeed(postType: .chefDeleted)
-    }
 }
+ 

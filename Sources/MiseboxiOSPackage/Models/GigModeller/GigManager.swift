@@ -33,8 +33,8 @@ class GigsManager {
     let username = "sender user name"
     
     public func addSlowGig(gig: Gig) async throws {
-        try await firestoreManager.setDoc(collection: rootCollection, entity: self.gig)
-        try await addToFeed(postType: .slowGig)
+        /*try await firestoreManager.setDoc(collection: rootCollection, entity: self.gig)
+        try await addToFeed(postType: .slowGig)*/
     }
     
     public func addToFeed(postType: PostManager.GigPostType) async throws {
