@@ -4,13 +4,13 @@ extension MiseboxUserManager {
 
     public func updateMiseboxUser(fieldName: String, newValue: Any) async throws {
         let updateData = [fieldName: newValue]
-       firestoreManager.updateDocument(collection: MiseboxUserDocCollection.miseboxUser.collection(), documentID: self.id, updateData: updateData)
+       firestoreManager.updateDocument(collection: MiseboxUserDocCollectionMarker.miseboxUser.collection(), documentID: self.id, updateData: updateData)
         try await updateDependants(fieldName: fieldName, newValue: newValue)
     }
     
     public func updateMiseboxUserProfile(fieldName: String, newValue: Any) async throws {
         let updateData = [fieldName: newValue]
-        firestoreManager.updateDocument(collection: MiseboxUserDocCollection.miseboxUserProfile.collection(), documentID: self.id, updateData: updateData)
+        firestoreManager.updateDocument(collection: MiseboxUserDocCollectionMarker.miseboxUserProfile.collection(), documentID: self.id, updateData: updateData)
     
     }
 

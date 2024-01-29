@@ -9,7 +9,7 @@ import Foundation
 
 extension ChefManager {
     
-    public func checkDocumentExistsInFirestore(doc: ChefDocCollection) async throws -> Bool {
+    public func checkDocumentExistsInFirestore(doc: ChefDocCollectionMarker) async throws -> Bool {
         return try await firestoreManager.checkDocumentExists(collection: doc.collection(), documentID: self.id)
     }
     
@@ -21,12 +21,12 @@ extension ChefManager {
         self.chef.generalInfo.username = miseboxUserManager.username
         self.chef.generalInfo.imageUrl = miseboxUserManager.imageUrl
         
-        try await firestoreManager.setDoc(inCollection: ChefDocCollection.chef.collection(), entity: self.chef)
+        try await firestoreManager.setDoc(inCollection: ChefDocCollectionMarker.chef.collection(), entity: self.chef)
         
         self.chefProfile.gallery.append(GalleryImage(name: "default", imageUrl: imageUrl))
         
         // id should already be primed ((this would be the sam place where we fix up the TODO above))
-        try await firestoreManager.setDoc(inCollection: ChefDocCollection.chefProfile.collection(), entity: self.chefProfile)
+        try await firestoreManager.setDoc(inCollection: ChefDocCollectionMarker.chefProfile.collection(), entity: self.chefProfile)
         
         // Update misebox users
         
@@ -35,7 +35,7 @@ extension ChefManager {
         print("Chef created with ID: \(self.chef.id)")
     }
     
-    public func documentListener(for doc: ChefDocCollection, completion: @escaping (Result<Void, Error>) -> Void) {
+    public func documentListener(for doc: ChefDocCollectionMarker, completion: @escaping (Result<Void, Error>) -> Void) {
         switch doc {
         case .chef:
             self.listener = firestoreManager.addDocumentListener(for: self.chef) { result in
@@ -60,7 +60,7 @@ extension ChefManager {
     }
     
     
-    public func collectionListener(for collection: ChefDocCollection, completion: @escaping (Result<[Chef], Error>) -> Void) {
+    public func collectionListener(for collection: ChefDocCollectionMarker, completion: @escaping (Result<[Chef], Error>) -> Void) {
         switch collection {
         case .chef:
             self.listener = firestoreManager.addCollectionListener(collection: collection.collection(), completion: completion)
@@ -91,8 +91,8 @@ extension ChefManager {
             image = "Default Image"
         }
         
-        let sender = PostManager.Sender(id: self.id, username: self.username, role: ChefDocCollection.chef.doc(), imageUrl: image)
-        let subject = PostManager.PostSubject(subjectId: self.id, collectionName: ChefDocCollection.chef.collection())
+        let sender = PostManager.Sender(id: self.id, username: self.username, role: ChefDocCollectionMarker.chef.doc(), imageUrl: image)
+        let subject = PostManager.PostSubject(subjectId: self.id, collectionName: ChefDocCollectionMarker.chef.collection())
         let content = PostManager.PostContent(title: title, body: body, imageUrl: image)
         
         let chefFeedEntry = PostManager.Chef(sender: sender, subject: subject, content: content, postType: postType)

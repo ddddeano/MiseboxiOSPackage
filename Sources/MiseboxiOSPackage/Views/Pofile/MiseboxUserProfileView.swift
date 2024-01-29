@@ -17,11 +17,11 @@ public class MiseboxUserProfileViewModel: CanMiseboxUser, ObservableObject {
     
     public func onboardMiseboxUser() async {
         
-        let ref: MiseboxUserManager.MiseboxUserDocCollection = .miseboxUser
+        let docRef: MiseboxUserManager.MiseboxUserDocCollectionMarker = .miseboxUser
         
         do {
-            if try await miseboxUserManager.checkMiseboxUserExistsInFirestore(doc: ref) {
-                miseboxUserManager.documentListener(for: ref) { result in
+            if try await miseboxUserManager.checkMiseboxUserExistsInFirestore(doc: docRef) {
+                miseboxUserManager.documentListener(for: docRef) { result in
                     switch result {
                     case .success(_):
                         print("Success listening to document")

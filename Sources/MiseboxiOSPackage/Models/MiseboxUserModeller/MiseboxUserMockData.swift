@@ -29,12 +29,12 @@ extension MiseboxUserManager {
     }
     
     static var exampleUserRole: UserRole {
-        var userRole = UserRole(role: .chef, name: "Deano")
+        let userRole = UserRole(role: .chef, name: "Deano")
         return userRole
     }
-        
+    
     static func mockMiseboxUser() -> MiseboxUser {
-        var mockUser = MiseboxUser()
+        let mockUser = MiseboxUser()
         mockUser.id = "12345trewq"
         mockUser.username = "miseUserOne"
         mockUser.imageUrl = tinyImg
@@ -44,7 +44,7 @@ extension MiseboxUserManager {
     }
     
     static func mockMiseboxUserProfile() -> MiseboxUserProfile {
-        var mockUserProfile = MiseboxUserProfile()
+        let mockUserProfile = MiseboxUserProfile()
         mockUserProfile.id = mockMiseboxUser().id
         mockUserProfile.fullName = exampleFullName
         mockUserProfile.subscription = exampleSubscription
@@ -53,11 +53,11 @@ extension MiseboxUserManager {
     }
     
     static func mockMiseboxUserManager() -> MiseboxUserManager {
-           let mockUser = MiseboxUserManager.mockMiseboxUser()
-           let mockUserProfile = MiseboxUserManager.mockMiseboxUserProfile()
-           let mockManager = MiseboxUserManager(user: mockUser, miseboxUserProfile: mockUserProfile, role: .chef)
-           return mockManager
-       }
+        let mockUser = MiseboxUserManager.mockMiseboxUser()
+        let mockUserProfile = MiseboxUserManager.mockMiseboxUserProfile()
+        let mockManager = MiseboxUserManager(miseboxUser: mockUser, miseboxUserProfile: mockUserProfile, role: .chef)
+        return mockManager
+    }
 }
 
 

@@ -11,7 +11,7 @@ import FirebaseFirestore
 public final class ChefManager: ObservableObject {
     var firestoreManager = FirestoreManager()
     
-    public enum ChefDocCollection: String {
+    public enum ChefDocCollectionMarker: String {
         case chef, chefProfile
         
         func collection() -> String {

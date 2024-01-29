@@ -9,16 +9,16 @@ import Foundation
 
 extension MiseboxUserManager {
     
-    public func checkMiseboxUserExistsInFirestore(doc: MiseboxUserDocCollection) async throws -> Bool {
+    public func checkMiseboxUserExistsInFirestore(doc: MiseboxUserDocCollectionMarker) async throws -> Bool {
         return try await firestoreManager.checkDocumentExists(collection: doc.collection(), documentID: self.id)
     }
     
     public func setMiseboxUserAndCreateProfile() async throws {
-        try await firestoreManager.setDoc(inCollection: MiseboxUserDocCollection.miseboxUser.collection(), entity: self.miseboxUser)
-        try await firestoreManager.setDoc(inCollection: MiseboxUserDocCollection.miseboxUserProfile.collection(), entity: self.miseboxUserProfile)
+        try await firestoreManager.setDoc(inCollection: MiseboxUserDocCollectionMarker.miseboxUser.collection(), entity: self.miseboxUser)
+        try await firestoreManager.setDoc(inCollection: MiseboxUserDocCollectionMarker.miseboxUserProfile.collection(), entity: self.miseboxUserProfile)
     }
     
-    public func documentListener(for doc: MiseboxUserDocCollection, completion: @escaping (Result<Void, Error>) -> Void) {
+    public func documentListener(for doc: MiseboxUserDocCollectionMarker, completion: @escaping (Result<Void, Error>) -> Void) {
         switch doc {
         case .miseboxUser:
             self.listener = firestoreManager.addDocumentListener(for: self.miseboxUser) { result in
@@ -46,12 +46,12 @@ extension MiseboxUserManager {
         }
     }
     
-    public func collectionListener(for collection: MiseboxUserDocCollection, completion: @escaping (Result<[MiseboxUser], Error>) -> Void) {
+    public func collectionListener(for collection: MiseboxUserDocCollectionMarker, completion: @escaping (Result<[MiseboxUser], Error>) -> Void) {
         switch collection {
         case .miseboxUser:
-            self.listener = firestoreManager.addCollectionListener(collection: MiseboxUserDocCollection.miseboxUser.collection(), completion: completion)
+            self.listener = firestoreManager.addCollectionListener(collection: MiseboxUserDocCollectionMarker.miseboxUser.collection(), completion: completion)
         case .miseboxUserProfile:
-            self.listener = firestoreManager.addCollectionListener(collection: MiseboxUserDocCollection.miseboxUserProfile.collection(), completion: completion)
+            self.listener = firestoreManager.addCollectionListener(collection: MiseboxUserDocCollectionMarker.miseboxUserProfile.collection(), completion: completion)
         }
     }
 }

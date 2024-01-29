@@ -10,13 +10,13 @@ extension ChefManager {
     
     public func updateChef(fieldName: String, newValue: Any) async throws {
         let updateData = [fieldName: newValue]
-        firestoreManager.updateDocument(collection: ChefDocCollection.chef.collection(), documentID: self.chef.id, updateData: updateData)
+        firestoreManager.updateDocument(collection: ChefDocCollectionMarker.chef.collection(), documentID: self.chef.id, updateData: updateData)
         try await updateDependants(fieldName: fieldName, newValue: newValue)
     }
     
     public func updateChefProfile(fieldName: String, newValue: Any) async throws {
         let updateData = [fieldName: newValue]
-        firestoreManager.updateDocument(collection: ChefDocCollection.chefProfile.collection(), documentID: self.chefProfile.id, updateData: updateData)
+        firestoreManager.updateDocument(collection: ChefDocCollectionMarker.chefProfile.collection(), documentID: self.chefProfile.id, updateData: updateData)
   
     }
     

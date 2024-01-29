@@ -10,7 +10,7 @@ public final class MiseboxUserManager: ObservableObject {
     public var role: SessionManager.UserRole
     let firestoreManager = FirestoreManager()
     
-    public enum MiseboxUserDocCollection: String {
+    public enum MiseboxUserDocCollectionMarker: String {
         case miseboxUser, miseboxUserProfile
 
         func collection() -> String {
