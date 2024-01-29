@@ -14,7 +14,7 @@ public final class ChefManager: ObservableObject {
     public enum ChefDocCollectionMarker: String {
         case chef, chefProfile
         
-        func collection() -> String {
+        public func collection() -> String {
             switch self {
             case .chef:
                 return "chefs"
@@ -22,7 +22,7 @@ public final class ChefManager: ObservableObject {
                 return "chef-profiles"
             }
         }
-        func doc() -> String {
+        public func doc() -> String {
             switch self {
             case .chef:
                 return "chef"
