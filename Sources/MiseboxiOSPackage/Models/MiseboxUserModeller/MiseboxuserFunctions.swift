@@ -15,6 +15,7 @@ extension MiseboxUserManager {
     
     public func setMiseboxUserAndCreateProfile() async throws {
         try await firestoreManager.setDoc(inCollection: MiseboxUserDocCollectionMarker.miseboxUser.collection(), entity: self.miseboxUser)
+        self.miseboxUserProfile.id = self.id
         try await firestoreManager.setDoc(inCollection: MiseboxUserDocCollectionMarker.miseboxUserProfile.collection(), entity: self.miseboxUserProfile)
     }
     
