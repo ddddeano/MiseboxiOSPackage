@@ -270,7 +270,7 @@ public struct CustomTextFieldStyle: TextFieldStyle {
 public enum TimeType {
     case start, end
 }
-struct AvatarView: View {
+public struct AvatarView: View {
     var imageUrl: String
     var width: CGFloat
     var height: CGFloat
