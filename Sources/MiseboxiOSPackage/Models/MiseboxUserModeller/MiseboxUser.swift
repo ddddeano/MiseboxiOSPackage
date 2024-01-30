@@ -8,9 +8,6 @@
 import Foundation
 import FirebaseFirestore
 
-import Foundation
-import FirebaseFirestore
-
 extension MiseboxUserManager {
     
     public final class MiseboxUser: ObservableObject, Identifiable, Listenable {

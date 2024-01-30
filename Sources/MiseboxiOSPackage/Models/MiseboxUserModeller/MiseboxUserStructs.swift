@@ -16,7 +16,7 @@ extension MiseboxUserManager {
             self.role = role
             self.name = name
         }
-        
+
         public init?(fromDictionary fire: [String: Any]) {
             guard let roleString = fire["role"] as? String,
                   let role = UserDependantDocCollection(rawValue: roleString) else { return nil }

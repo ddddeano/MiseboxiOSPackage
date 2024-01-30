@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import Firebase
 
 extension ChefManager {
     
@@ -22,7 +23,15 @@ extension ChefManager {
         self.chefProfile.id = self.id
         try await firestoreManager.setDoc(inCollection: ChefDocCollectionMarker.chefProfile.collection(), entity: self.chefProfile)
         
-        // Update misebox users
+        let chefRole = MiseboxUserManager.UserRole(role: .chef, name: self.name)
+        
+        let updateData = ["user_roles": FieldValue.arrayUnion([chefRole.toFirestore()])]
+        firestoreManager.updateDocument(
+            collection: MiseboxUserManager.MiseboxUserDocCollectionMarker.miseboxUser.collection(),
+            documentID: self.id,
+            updateData: updateData
+        )
+        
         
         try await addToFeed(postType: .chefCreated)
         
