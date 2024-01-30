@@ -7,17 +7,21 @@
 
 import Foundation
 
-public final class SessionManager {
+public final class SessionManager: ObservableObject, ManagerDelegate {
     @Published public var session: Session
     
     private let themePreferenceKey = "isDarkModeEnabled"
     
     public init(session: Session) {
         self.session = session
+        self.session.delegate = self
         loadThemePreferences()
     }
     
-
+    public enum UserRole: String {
+        case recruiter = "recruiter"
+        case chef = "chef"
+    }
 
     public func saveThemePreferences(isDarkModeEnabled: Bool) {
         UserDefaults.standard.set(isDarkModeEnabled, forKey: themePreferenceKey)

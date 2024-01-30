@@ -44,7 +44,7 @@ extension MiseboxUserManager {
         }
         weak var delegate: ManagerDelegate?
 
-        func reset() {
+        public func reset() {
             delegate?.resetData()
         }
     }

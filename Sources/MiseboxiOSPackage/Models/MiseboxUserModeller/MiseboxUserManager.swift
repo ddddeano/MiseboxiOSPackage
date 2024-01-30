@@ -6,7 +6,7 @@
 import Foundation
 import FirebaseFirestore
 
-public final class MiseboxUserManager: ObservableObject {
+public final class MiseboxUserManager: ObservableObject, ManagerDelegate {
     public var role: SessionManager.UserRole
     let firestoreManager = FirestoreManager()
     
@@ -41,9 +41,10 @@ public final class MiseboxUserManager: ObservableObject {
     @Published public var miseboxUserProfile: MiseboxUserProfile
     
     public init(miseboxUser: MiseboxUser, miseboxUserProfile: MiseboxUserProfile, role: SessionManager.UserRole) {
+        self.role = role
         self.miseboxUser = miseboxUser
         self.miseboxUserProfile = miseboxUserProfile
-        self.role = role
+        self.miseboxUser.delegate = self
     }
     weak var delegate: ManagerDelegate?
 

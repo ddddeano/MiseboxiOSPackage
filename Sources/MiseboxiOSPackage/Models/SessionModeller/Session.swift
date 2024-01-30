@@ -11,10 +11,6 @@ import Combine
 
 extension SessionManager {
     
-    public enum UserRole: String {
-        case recruiter = "recruiter"
-        case chef = "chef"
-    }
     public class Session: ObservableObject {
         public let role: UserRole
         @Published public var id = ""
@@ -22,6 +18,12 @@ extension SessionManager {
         
         public init(role: UserRole) {
             self.role = role
+        }
+    
+    weak var delegate: ManagerDelegate?
+
+        public func reset() {
+            delegate?.resetData()
         }
     }
 }
