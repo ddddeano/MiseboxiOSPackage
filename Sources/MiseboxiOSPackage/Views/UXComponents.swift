@@ -28,7 +28,7 @@ public struct Palette {
     let color1: Color
     let color2: Color
 
-    init(color1: Color, color2: Color) {
+   public init(color1: Color, color2: Color) {
         self.color1 = color1
         self.color2 = color2
     }
