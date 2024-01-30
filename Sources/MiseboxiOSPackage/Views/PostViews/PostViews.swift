@@ -52,7 +52,7 @@ public struct PostHeader: View {
 
     public var body: some View {
         HStack(spacing: 10) {
-            AvatarView(imageUrl: post.sender.imageUrl, width: 30, height: 30, onSelect: { print("Avatar clicked") })
+            AvatarView(imageUrl: post.sender.imageUrl, width: 30, height: 30, onSelect: { print("Avatar clicked") }, palette: placeholderPalette)
             
             VStack(alignment: .leading, spacing: 0) {
                 HStack(alignment: .bottom, spacing: 2) {

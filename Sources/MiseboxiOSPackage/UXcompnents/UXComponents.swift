@@ -258,8 +258,10 @@ public struct Palette {
         self.color2 = color2
     }
 }
-public let userPalette = Palette(color1: MBColourDarkBlue, color2: MBColourPaleGreen)
-public let chefPalette = Palette(color1: MBColourDarkBlue, color2: MBColourPaleGreen)
+public let userPalette = Palette(color1: MBColourDarkBlue, color2: MBColourPaleBlue)
+public let chefPalette = Palette(color1: MBColourPaleBlue, color2: MBColourPaleGreen)
+public let placeholderPalette = Palette(color1: MBColourNaturalPurple, color2: MBColourPaleGreen)
+
 
 public struct AvatarView: View {
     var imageUrl: String
