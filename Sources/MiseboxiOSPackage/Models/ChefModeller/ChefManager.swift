@@ -49,6 +49,7 @@ public final class ChefManager: ObservableObject {
         self.chefProfile = ChefProfile()
         listener?.remove()
     }
+    
     public enum ChefDependentCollections: String, CaseIterable {
         case miseboxUser, kitchen
         func toCollectionAndDocument() -> (collection: String, document: String) {
