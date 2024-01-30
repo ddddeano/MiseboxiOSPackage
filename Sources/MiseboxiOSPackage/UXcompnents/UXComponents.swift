@@ -260,15 +260,15 @@ public struct AvatarView: View {
             if hasNewContent {
                 Circle()
                     .stroke(LinearGradient(gradient: Gradient(colors: [Color.green, Color.blue]), startPoint: .topLeading, endPoint: .bottomTrailing),
-                            lineWidth: 2) // Reduce the lineWidth to 2
+                            lineWidth: width * 0.05)
+                    .frame(width: width, height: height) // Adjust the frame to match image size
             } else {
                 Circle()
                     .stroke(Color.black, lineWidth: 1)
+                    .frame(width: width, height: height) // Adjust the frame to match image size
             }
         }
-        .frame(width: width, height: height) // Remove the extra width and height adjustments
     }
-
 
     public var asyncImage: some View {
         AsyncImage(url: URL(string: imageUrl)) { phase in
