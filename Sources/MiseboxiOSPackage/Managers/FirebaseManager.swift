@@ -41,9 +41,13 @@ public class FirestoreManager {
     }
     
     public func setDoc<T: FirestoreEntity>(inCollection: String, entity: T, merge: Bool = false) async throws {
+        print("InCollection: \(inCollection)")
+        print("Entity ID: \(entity.id)")
         let docRef = db.collection(inCollection).document(entity.id)
+        print("Document Reference: \(docRef.path)")
         try await docRef.setData(entity.toFirestore(), merge: merge)
     }
+
     
     @discardableResult
     public func createFeedEntry<T: Postable>(entry: T) async throws -> String {
