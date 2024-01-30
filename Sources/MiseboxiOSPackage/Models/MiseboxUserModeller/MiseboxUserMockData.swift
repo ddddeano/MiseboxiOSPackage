@@ -11,7 +11,7 @@ import FirebaseFirestore
 extension MiseboxUserManager {
     static let tinyImg = "https://firebasestorage.googleapis.com:443/v0/b/misebox-78f9c.appspot.com/o/avatars%2Fdog5.jpg?alt=media&token=c1bf2892-b854-4078-9bed-c8266c5362d9"
     
-    static var exampleSubscription: Subscription {
+    public static var exampleSubscription: Subscription {
         var subscription = Subscription()
         
         subscription.type = .basic
@@ -20,7 +20,7 @@ extension MiseboxUserManager {
         
         return subscription
     }
-    static var exampleFullName: FullName {
+    public static var exampleFullName: FullName {
         var fullName = FullName()
         fullName.first = "Daniel"
         fullName.middle = "Marc"
@@ -28,12 +28,12 @@ extension MiseboxUserManager {
         return fullName
     }
     
-    static var exampleUserRole: UserRole {
+    public static var exampleUserRole: UserRole {
         let userRole = UserRole(role: .chef, name: "Deano")
         return userRole
     }
     
-    static func mockMiseboxUser() -> MiseboxUser {
+    public static func mockMiseboxUser() -> MiseboxUser {
         let mockUser = MiseboxUser()
         mockUser.id = "12345trewq"
         mockUser.username = "miseUserOne"
@@ -43,7 +43,7 @@ extension MiseboxUserManager {
         return mockUser
     }
     
-    static func mockMiseboxUserProfile() -> MiseboxUserProfile {
+    public static func mockMiseboxUserProfile() -> MiseboxUserProfile {
         let mockUserProfile = MiseboxUserProfile()
         mockUserProfile.id = mockMiseboxUser().id
         mockUserProfile.fullName = exampleFullName
@@ -52,7 +52,7 @@ extension MiseboxUserManager {
         return mockUserProfile
     }
     
-    static func mockMiseboxUserManager() -> MiseboxUserManager {
+    public static func mockMiseboxUserManager() -> MiseboxUserManager {
         let mockUser = MiseboxUserManager.mockMiseboxUser()
         let mockUserProfile = MiseboxUserManager.mockMiseboxUserProfile()
         let mockManager = MiseboxUserManager(miseboxUser: mockUser, miseboxUserProfile: mockUserProfile, role: .chef)
