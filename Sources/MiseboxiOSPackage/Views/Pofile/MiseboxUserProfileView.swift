@@ -59,7 +59,7 @@ public class MiseboxUserProfileViewModel: CanMiseboxUser, ObservableObject {
     public func signOut() {
         do {
             try Auth.auth().signOut()
-            miseboxUserManager.resetMiseboxUser()
+            miseboxUserManager.reset()
         } catch let signOutError as NSError {
             print("Error signing out: \(signOutError.localizedDescription)")
         }
