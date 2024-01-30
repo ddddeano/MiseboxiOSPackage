@@ -23,7 +23,7 @@ extension ChefManager {
         self.chefProfile.id = self.id
         try await firestoreManager.setDoc(inCollection: ChefDocCollectionMarker.chefProfile.collection(), entity: self.chefProfile)
         
-        let chefRole = MiseboxUserManager.UserRole(role: .chef, name: self.name)
+        let chefRole = MiseboxUserManager.UserRole(role: .chef, name: self.chef.generalInfo.name)
         
         let updateData = ["user_roles": FieldValue.arrayUnion([chefRole.toFirestore()])]
         firestoreManager.updateDocument(
