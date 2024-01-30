@@ -271,6 +271,7 @@ public enum TimeType {
     case start, end
 }
 
+
 public struct AvatarView: View {
     var imageUrl: String
     var width: CGFloat
@@ -305,7 +306,7 @@ public struct AvatarView: View {
                 .frame(width: width, height: height) // 100% of input width and height
                 .overlay(
                     Circle()
-                        .stroke(palette.color1, lineWidth: 1) // 1px border of the darker color
+                        .stroke(Color(.black), lineWidth: width * 0.01) // 2% border of the darker color
                 )
                 .shadow(
                     color: Color.black.opacity(0.3),
@@ -337,7 +338,7 @@ public struct AvatarView: View {
                         .clipShape(Circle())
                         .overlay(
                             Circle()
-                                .stroke(Color(.black), lineWidth: 2) // 1px border of the darker color
+                                .stroke(Color(.black), lineWidth: width * 0.02)
                         )
                 case .failure:
                     Image(systemName: "exclamationmark.triangle")
@@ -360,7 +361,7 @@ public struct AvatarView: View {
                     )
                     .overlay(
                         Circle()
-                            .stroke(Color(.black), lineWidth: 1)
+                            .stroke(Color(.black), lineWidth: width * 0.01)
                     )
                     .frame(width: width * 0.20, height: height * 0.20)
                     .offset(x: width * 0.33, y: width * 0.33)
@@ -371,4 +372,3 @@ public struct AvatarView: View {
         .onTapGesture(perform: onSelect)
     }
 }
-
