@@ -270,62 +270,105 @@ public struct CustomTextFieldStyle: TextFieldStyle {
 public enum TimeType {
     case start, end
 }
+
 public struct AvatarView: View {
     var imageUrl: String
     var width: CGFloat
     var height: CGFloat
     var onSelect: () -> Void
-    var hasNewContent: Bool = false
+    var hasNewContent: Bool
     var palette: Palette
-
-    public init(imageUrl: String, width: CGFloat, height: CGFloat, onSelect: @escaping () -> Void, palette: Palette) {
+    
+    public init(imageUrl: String, width: CGFloat, height: CGFloat, onSelect: @escaping () -> Void, palette: Palette, hasNewContent: Bool) {
         self.imageUrl = imageUrl
         self.width = width
         self.height = height
         self.onSelect = onSelect
-        self.palette = palette // Initialize the palette
+        self.hasNewContent = hasNewContent
+        self.palette = palette
     }
-
-    public var notificationRing: some View {
-        Group {
+    
+    public var body: some View {
+        ZStack {
+            Circle()
+                .fill(
+                    LinearGradient(
+                        gradient: Gradient(colors: [
+                            palette.color1,
+                            palette.color2,
+                            palette.color1 // Repeating the first color for a subtle flash effect
+                        ]),
+                        startPoint: .topLeading,
+                        endPoint: .bottomTrailing
+                    )
+                )
+                .frame(width: width, height: height) // 100% of input width and height
+                .overlay(
+                    Circle()
+                        .stroke(palette.color1, lineWidth: 1) // 1px border of the darker color
+                )
+                .shadow(
+                    color: Color.black.opacity(0.3),
+                    radius: width * 0.05,
+                    x: 0,
+                    y: width * 0.05
+                )
+            
             if hasNewContent {
                 Circle()
-                    .stroke(LinearGradient(gradient: Gradient(colors: [palette.color1, palette.color2]), startPoint: .topLeading, endPoint: .bottomTrailing), lineWidth: width * 0.05)
-                    .frame(width: width, height: height) // Adjust the frame to match image size
-            } else {
+                    .fill(
+                        LinearGradient(
+                            gradient: Gradient(colors: [Color.yellow, Color.orange, Color.white, Color.orange,Color.yellow]),
+                            startPoint: .topLeading,
+                            endPoint: .bottomTrailing
+                        )
+                    )
+                    .frame(width: width * 0.9, height: height * 0.9)
+            }
+            AsyncImage(url: URL(string: imageUrl)) { phase in
+                switch phase {
+                case .empty:
+                    ProgressView()
+                case .success(let image):
+                    image
+                        .resizable()
+                        .scaledToFill()
+                        .frame(width: width * (hasNewContent ? 0.8 : 0.9), height: height * 0.9)
+                        .clipShape(Circle())
+                        .overlay(
+                            Circle()
+                                .stroke(Color(.black), lineWidth: 2) // 1px border of the darker color
+                        )
+                case .failure:
+                    Image(systemName: "exclamationmark.triangle")
+                        .resizable()
+                        .scaledToFit()
+                        .foregroundColor(.red)
+                        .frame(width: width * 0.6, height: height * 0.6)
+                @unknown default:
+                    EmptyView()
+                }
+            }
+            if hasNewContent {
                 Circle()
-                    .stroke(Color.black, lineWidth: 1)
-                    .frame(width: width, height: height) // Adjust the frame to match image size
+                    .fill(
+                        LinearGradient(
+                            gradient: Gradient(colors: [Color.red, Color.orange]),
+                            startPoint: .topLeading,
+                            endPoint: .bottomTrailing
+                        )
+                    )
+                    .overlay(
+                        Circle()
+                            .stroke(Color(.black), lineWidth: 1)
+                    )
+                    .frame(width: width * 0.20, height: height * 0.20)
+                    .offset(x: width * 0.33, y: width * 0.33)
+                    
+                
             }
         }
-    }
-
-    public var asyncImage: some View {
-        AsyncImage(url: URL(string: imageUrl)) { phase in
-            switch phase {
-            case .empty:
-                ProgressView()
-            case .success(let image):
-                image.resizable().scaledToFill()
-            case .failure:
-                Image(systemName: "exclamationmark.triangle").resizable().scaledToFit().foregroundColor(.red)
-            @unknown default:
-                EmptyView()
-            }
-        }
-        .frame(width: width, height: height)
-        .clipShape(Circle())
-        .shadow(color: .gray, radius: 1, x: 0, y: 0) // Sharper shadow
-    }
-
-    public var body: some View {
-        Button(action: onSelect) {
-            ZStack {
-                notificationRing
-                asyncImage
-            }
-        }
-        .buttonStyle(PlainButtonStyle())
+        .onTapGesture(perform: onSelect)
     }
 }
 
