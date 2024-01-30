@@ -15,17 +15,11 @@ extension ChefManager {
     
     public func setChefAndCreateProfile(miseboxUserManager: MiseboxUserManager) async throws {
         
-        // prime chef with data from MBU, TODO probably move this to a part of the onboarding process
-        self.chef.miseboxUser = miseboxUserManager.toChef
-        self.chef.name = miseboxUserManager.name
-        self.chef.generalInfo.username = miseboxUserManager.username
-        self.chef.generalInfo.imageUrl = miseboxUserManager.imageUrl
-        
         try await firestoreManager.setDoc(inCollection: ChefDocCollectionMarker.chef.collection(), entity: self.chef)
         
         self.chefProfile.gallery.append(GalleryImage(name: "default", imageUrl: imageUrl))
         
-        // id should already be primed ((this would be the sam place where we fix up the TODO above))
+        self.chefProfile.id = self.id
         try await firestoreManager.setDoc(inCollection: ChefDocCollectionMarker.chefProfile.collection(), entity: self.chefProfile)
         
         // Update misebox users

@@ -14,10 +14,15 @@ extension MiseboxUserManager {
     }
     
     public func setMiseboxUserAndCreateProfile() async throws {
+        if self.imageUrl.isEmpty {
+            self.miseboxUser.imageUrl = defaultImage
+        }
+        
         try await firestoreManager.setDoc(inCollection: MiseboxUserDocCollectionMarker.miseboxUser.collection(), entity: self.miseboxUser)
         self.miseboxUserProfile.id = self.id
         try await firestoreManager.setDoc(inCollection: MiseboxUserDocCollectionMarker.miseboxUserProfile.collection(), entity: self.miseboxUserProfile)
     }
+
     
     public func documentListener(for doc: MiseboxUserDocCollectionMarker, completion: @escaping (Result<Void, Error>) -> Void) {
         switch doc {
