@@ -25,8 +25,8 @@ public let MBColourNaturalPurple = Color(red: 0.58, green: 0.44, blue: 0.86) // 
 public let MBColourCream = Color(red: 0.92, green: 0.91, blue: 0.88) // A soft, light cream color
 
 public struct Palette {
-    let color1: Color
-    let color2: Color
+    public let color1: Color
+    public let color2: Color
 
    public init(color1: Color, color2: Color) {
         self.color1 = color1
