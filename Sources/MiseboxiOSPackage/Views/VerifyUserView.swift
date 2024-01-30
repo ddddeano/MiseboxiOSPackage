@@ -33,7 +33,7 @@ public struct VerifyUserView: View {
                 }
             }
 
-            TextField("Enter your name", text: $username)
+            TextField("Enter a username for the misebox ecosysytem", text: $username)
                 .textFieldStyle(RoundedBorderTextFieldStyle())
                 .padding()
 
