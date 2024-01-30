@@ -72,4 +72,13 @@ public class AuthenticationManager: ObservableObject {
         let authResult = try await currentUser.link(with: credential)
         return FirebaseUser(user: authResult.user)
     }
+    public func signOut() {
+         do {
+             try Auth.auth().signOut()
+             // Handle any additional cleanup or state reset here
+         } catch let signOutError as NSError {
+             print("Error signing out: %@", signOutError)
+             // Handle errors (e.g., update state, send notifications)
+         }
+     }
 }
