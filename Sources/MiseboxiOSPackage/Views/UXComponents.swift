@@ -308,12 +308,6 @@ public struct AvatarView: View {
                     Circle()
                         .stroke(Color(.black), lineWidth: width * 0.01) // 2% border of the darker color
                 )
-                .shadow(
-                    color: Color.black.opacity(0.3),
-                    radius: width * 0.05,
-                    x: 0,
-                    y: width * 0.05
-                )
             
             if hasNewContent {
                 Circle()
