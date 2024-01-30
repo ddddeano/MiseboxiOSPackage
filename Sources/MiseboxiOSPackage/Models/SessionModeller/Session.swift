@@ -20,11 +20,6 @@ extension SessionManager {
             self.role = role
         }
     
-    weak var delegate: ManagerDelegate?
-
-        public func reset() {
-            delegate?.resetData()
-        }
     }
 }
 

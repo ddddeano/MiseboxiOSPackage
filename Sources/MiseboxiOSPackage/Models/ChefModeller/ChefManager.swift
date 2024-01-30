@@ -8,7 +8,7 @@
 import Foundation
 import FirebaseFirestore
 
-public final class ChefManager: ObservableObject, ManagerDelegate {
+public final class ChefManager: ObservableObject {
     var firestoreManager = FirestoreManager()
     
     public enum ChefDocCollectionMarker: String {
@@ -42,7 +42,6 @@ public final class ChefManager: ObservableObject, ManagerDelegate {
     public init(chef: Chef, chefProfile: ChefProfile) {
         self.chef = chef
         self.chefProfile = chefProfile
-        self.chef.delegate = self
 
     }
     public func resetData() {

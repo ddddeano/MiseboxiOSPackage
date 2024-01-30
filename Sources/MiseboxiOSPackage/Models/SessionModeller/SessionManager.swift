@@ -7,14 +7,13 @@
 
 import Foundation
 
-public final class SessionManager: ObservableObject, ManagerDelegate {
+public final class SessionManager: ObservableObject {
     @Published public var session: Session
     
     private let themePreferenceKey = "isDarkModeEnabled"
     
     public init(session: Session) {
         self.session = session
-        self.session.delegate = self
         loadThemePreferences()
     }
     
