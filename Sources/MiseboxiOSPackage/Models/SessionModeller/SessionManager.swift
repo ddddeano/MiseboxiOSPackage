@@ -31,7 +31,7 @@ public final class SessionManager: ObservableObject {
             session.isDarkMode = isDarkModeEnabled
         }
     }
-    public func resetData() {
+    public func reset() {
         self.session = Session(role: session.role)
     }
 }
