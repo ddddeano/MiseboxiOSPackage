@@ -34,6 +34,7 @@ public struct VerifyUserView: View {
             }
             Text("Enter a username for the misebox ecosysytem")
             TextField("Username", text: $username)
+                .autocapitalization(.none)
                 .textFieldStyle(RoundedBorderTextFieldStyle())
                 .padding()
 
