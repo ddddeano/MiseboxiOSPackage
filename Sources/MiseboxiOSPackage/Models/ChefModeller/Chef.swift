@@ -44,6 +44,13 @@ extension ChefManager {
                 "kitchens": kitchens.map { $0.toFirestore() }
             ]
         }
+       
+        weak var delegate: ManagerDelegate?
+
+        func reset() {
+            delegate?.resetData()
+        }
     }
 }
+
 

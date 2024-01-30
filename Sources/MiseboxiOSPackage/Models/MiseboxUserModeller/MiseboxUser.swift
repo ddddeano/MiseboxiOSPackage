@@ -42,6 +42,11 @@ extension MiseboxUserManager {
                 "user_roles": userRoles.map { $0.toFirestore() }
             ]
         }
+        weak var delegate: ManagerDelegate?
+
+        func reset() {
+            delegate?.resetData()
+        }
     }
 }
 

@@ -17,9 +17,7 @@ public final class SessionManager {
         loadThemePreferences()
     }
     
-    public func resetSession() {
-        self.session = Session(role: session.role)
-    }
+
 
     public func saveThemePreferences(isDarkModeEnabled: Bool) {
         UserDefaults.standard.set(isDarkModeEnabled, forKey: themePreferenceKey)
@@ -29,6 +27,9 @@ public final class SessionManager {
         if let isDarkModeEnabled = UserDefaults.standard.object(forKey: themePreferenceKey) as? Bool {
             session.isDarkMode = isDarkModeEnabled
         }
+    }
+    public func resetData() {
+        self.session = Session(role: session.role)
     }
 }
 

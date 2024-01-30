@@ -45,8 +45,9 @@ public final class MiseboxUserManager: ObservableObject {
         self.miseboxUserProfile = miseboxUserProfile
         self.role = role
     }
-    
-    public func resetMiseboxUser() {
+    weak var delegate: ManagerDelegate?
+
+    public func resetData() {
         self.miseboxUser = MiseboxUser()
         self.miseboxUserProfile = MiseboxUserProfile()
         listener?.remove()

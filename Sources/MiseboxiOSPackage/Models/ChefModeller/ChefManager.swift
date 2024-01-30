@@ -43,7 +43,7 @@ public final class ChefManager: ObservableObject {
         self.chefProfile = chefProfile
         self.chef = chef
     }
-    public func resetChef() {
+    public func resetData() {
         self.chef = Chef()
         self.chefProfile = ChefProfile()
         listener?.remove()
