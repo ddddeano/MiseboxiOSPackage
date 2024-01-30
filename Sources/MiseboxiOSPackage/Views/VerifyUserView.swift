@@ -32,8 +32,8 @@ public struct VerifyUserView: View {
                     }
                 }
             }
-
-            TextField("Enter a username for the misebox ecosysytem", text: $username)
+            Text("Enter a username for the misebox ecosysytem")
+            TextField("Username", text: $username)
                 .textFieldStyle(RoundedBorderTextFieldStyle())
                 .padding()
 
@@ -44,6 +44,5 @@ public struct VerifyUserView: View {
                 }
             }
         }
-//        .padding()
     }
 }
