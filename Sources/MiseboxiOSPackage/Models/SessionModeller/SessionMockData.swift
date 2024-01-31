@@ -6,3 +6,14 @@
 //
 
 import Foundation
+
+extension SessionManager {
+        
+    public static func mockSessionManager() -> SessionManager {
+        
+        let mockSession = Session(role: .chef)
+        
+        let mockSessionManager = SessionManager(session: mockSession)
+        return mockSessionManager
+    }
+}
