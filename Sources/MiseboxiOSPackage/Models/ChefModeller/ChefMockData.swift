@@ -104,8 +104,7 @@ extension ChefManager {
         return chef
     }
     
-    static func mockChefProfile() -> ChefProfile {
-        var profile = ChefProfile()
+c        var profile = ChefProfile()
         profile.id = mockChef().id
         profile.nationality = mockNationality()
         profile.aboutMeBio = mockAboutMeBio()
