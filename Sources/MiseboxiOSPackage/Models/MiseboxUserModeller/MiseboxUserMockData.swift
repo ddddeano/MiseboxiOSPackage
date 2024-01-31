@@ -36,7 +36,7 @@ extension MiseboxUserManager {
     public static func mockMiseboxUser() -> MiseboxUser {
         let mockUser = MiseboxUser()
         mockUser.id = "12345trewq"
-        mockUser.username = "miseUserOne"
+        mockUser.username = "miseuserone"
         mockUser.imageUrl = tinyImg
         mockUser.verified = true
         mockUser.userRoles = [exampleUserRole]
