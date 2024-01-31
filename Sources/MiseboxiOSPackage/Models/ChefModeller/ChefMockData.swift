@@ -114,4 +114,11 @@ extension ChefManager {
         profile.qualifications = [mockQualification(), mockQualification()]
         return profile
     }
+    
+    public static func mockChefManager() -> ChefManager {
+        let mockChef = ChefManager.mockChef()
+        let mockChefProfile = ChefManager.mockChefProfile()
+        let mockChefManager = ChefManager(chef: mockChef, chefProfile: mockChefProfile)
+        return mockChefManager
+    }
 }
