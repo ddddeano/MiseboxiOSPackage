@@ -42,7 +42,7 @@ extension MiseboxUserManager {
             self.last = fire["last"] as? String ?? ""
         }
         public func toFirestore() -> [String: Any] {
-            ["first": first, "middle": middle, "last": last,]
+            ["first": first, "middle": middle, "last": last]
         }
     }
     
