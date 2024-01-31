@@ -21,6 +21,7 @@ extension MiseboxUserManager {
         public init() {}
 
         public init?(documentSnapshot: DocumentSnapshot) {
+            print("printong misebox user profile data", documentSnapshot.data())
             guard let data = documentSnapshot.data() else { return nil }
             self.id = documentSnapshot.documentID
             print("printong misebox user profile data", data)
