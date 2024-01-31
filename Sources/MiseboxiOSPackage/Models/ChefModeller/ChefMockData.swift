@@ -93,7 +93,7 @@ extension ChefManager {
         return language
     }
 
-    static func mockChef() -> Chef {
+    public static func mockChef() -> Chef {
         var chef = Chef()
         chef.id = mockMiseboxUserManager.id
         chef.name = mockMiseboxUserManager.name
