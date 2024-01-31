@@ -44,9 +44,9 @@ extension ChefManager {
             self.listener = firestoreManager.addDocumentListener(for: self.chef) { result in
                 switch result {
                 case .success(_):
-                    print("Listening to Chef success")
+                    self.chefExists = true
                 case .failure(let error):
-                    print("Chef document listener failed with error: \(error.localizedDescription)")
+                    self.chefExists = false
                 }
             }
             

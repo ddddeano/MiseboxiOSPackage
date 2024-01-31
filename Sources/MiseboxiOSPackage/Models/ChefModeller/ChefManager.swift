@@ -37,6 +37,7 @@ public final class ChefManager: ObservableObject {
         listener?.remove()
     }
     @Published public var chef: Chef
+    @Published public var chefExists: Bool = false
     @Published public var chefProfile: ChefProfile
     
     public init(chef: Chef, chefProfile: ChefProfile) {
