@@ -73,7 +73,7 @@ public final class MiseboxUserManager: ObservableObject {
         }
     }
 
-    public enum Role: String {
+    public enum EcoSystemRole: String {
            case chef = "chef"
            case recruiter = "recruiter"
        }
