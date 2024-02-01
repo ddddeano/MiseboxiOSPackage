@@ -15,27 +15,19 @@ extension ChefManager {
     }
     
     public func setChefAndCreateProfile(miseboxUserManager: MiseboxUserManager) async throws {
-        
         try await firestoreManager.setDoc(inCollection: ChefDocCollectionMarker.chef.collection(), entity: self.chef)
         
         self.chefProfile.gallery.append(GalleryImage(name: "default", imageUrl: imageUrl))
-        
         self.chefProfile.id = self.id
         try await firestoreManager.setDoc(inCollection: ChefDocCollectionMarker.chefProfile.collection(), entity: self.chefProfile)
         
-        let chefRole = MiseboxUserManager.UserRole(role: .chef, name: self.chef.generalInfo.name)
+        let chefRoleToAdd = MiseboxUserManager.UserRole(role: .chef, name: self.chef.generalInfo.name).toFirestore()
         
-        let updateData = ["user_roles": FieldValue.arrayUnion([chefRole.toFirestore()])]
-        firestoreManager.updateDocument(
-            collection: MiseboxUserManager.MiseboxUserDocCollectionMarker.miseboxUser.collection(),
-            documentID: self.id,
-            updateData: updateData
-        )
+        let updateData = ["user_roles": FieldValue.arrayUnion([chefRoleToAdd])]
         
+        try await miseboxUserManager.updateMiseboxUser(fieldName: "user_roles", newValue: updateData["user_roles"]!)
         
         try await addToFeed(postType: .chefCreated)
-        
-        print("Chef created with ID: \(self.chef.id)")
     }
     
     public func documentListener(for doc: ChefDocCollectionMarker, completion: @escaping (Result<Void, Error>) -> Void) {

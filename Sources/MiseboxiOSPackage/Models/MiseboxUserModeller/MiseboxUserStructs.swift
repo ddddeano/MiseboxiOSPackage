@@ -9,23 +9,23 @@ import FirebaseFirestore // Import Firestore
 extension MiseboxUserManager {
     
     public struct UserRole {
-        public var role: UserDependantDocCollection
+        public var role: EcoSystemRole
         public var name: String
         
-        public init(role: UserDependantDocCollection, name: String) {
+        public init(role: EcoSystemRole, name: String) {
             self.role = role
             self.name = name
         }
 
         public init?(fromDictionary fire: [String: Any]) {
             guard let roleString = fire["role"] as? String,
-                  let role = UserDependantDocCollection(rawValue: roleString) else { return nil }
+                  let role = EcoSystemRole(rawValue: roleString) else { return nil }
             self.role = role
             self.name = fire["name"] as? String ?? ""
         }
         
         public func toFirestore() -> [String: Any] {
-            return ["role": role.doc(), "name": name]
+            return ["role": role.rawValue, "name": name]
         }
     }
     
