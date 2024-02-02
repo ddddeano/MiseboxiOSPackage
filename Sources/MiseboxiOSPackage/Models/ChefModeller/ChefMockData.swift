@@ -94,7 +94,7 @@ extension ChefManager {
     }
 
     public static func mockChef() -> Chef {
-        var chef = Chef()
+        let chef = Chef()
         chef.id = mockMiseboxUserManager.id
         chef.name = mockMiseboxUserManager.name
         chef.generalInfo = mockGeneralInfo()
@@ -105,7 +105,7 @@ extension ChefManager {
     }
     
     public static func mockChefProfile() -> ChefProfile {
-        var profile = ChefProfile()
+        let profile = ChefProfile()
         profile.id = mockChef().id
         profile.nationality = mockNationality()
         profile.aboutMeBio = mockAboutMeBio()

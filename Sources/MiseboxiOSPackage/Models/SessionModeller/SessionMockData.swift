@@ -11,7 +11,7 @@ extension SessionManager {
         
     public static func mockSessionManager() -> SessionManager {
         
-        let mockSession = Session(role: .chef)
+        let mockSession = Session()
         
         let mockSessionManager = SessionManager(session: mockSession)
         return mockSessionManager

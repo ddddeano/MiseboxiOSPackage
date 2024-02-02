@@ -37,8 +37,9 @@ extension ChefManager {
                 switch result {
                 case .success(_):
                     self.chefExists = true
-                case .failure(let error):
+                case .failure(_):
                     self.chefExists = false
+                    
                 }
             }
             

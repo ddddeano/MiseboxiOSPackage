@@ -10,27 +10,23 @@ public final class MiseboxUserManager: ObservableObject {
     public var role: SessionManager.UserRole
     let firestoreManager = FirestoreManager()
     
-    public enum MiseboxUserDocCollectionMarker: String {
-        case miseboxUser, miseboxUserProfile
-
-        func collection() -> String {
-            switch self {
-            case .miseboxUser:
-                return "misebox-users"
-            case .miseboxUserProfile:
-                return "misebox-user-profiles"
+    public enum RoleTypes {
+         static let miseboxUser = RoleType(doc: "misebox-user", collection: "misebox-users", profile: "misebox-user-profile", profileCollection: "misebox-user-profiles")
+         static let chef = RoleType(doc: "chef", collection: "chefs", profile: "chef-profile", profileCollection: "chef-profiles")
+         static let agent = RoleType(doc: "agent", collection: "agents", profile: "agent-profile", profileCollection: "agent-profiles")
+         static let recruiter = RoleType(doc: "recruiter", collection: "recruiters", profile: "recruiter-profile", profileCollection: "recruiter-profiles")
+         
+        static func roleType(for doc: String) -> RoleType {
+            switch doc {
+            case miseboxUser.doc: return miseboxUser
+            case chef.doc: return chef
+            case agent.doc: return agent
+            case recruiter.doc: return recruiter
+            default: fatalError("Unknown doc type: \(doc)")
             }
         }
 
-        func doc() -> String {
-            switch self {
-            case .miseboxUser:
-                return "misebox-user"
-            case .miseboxUserProfile:
-                return "misebox-user-profile"
-            }
-        }
-    }
+     }
     
     public var listener: ListenerRegistration?
     deinit {

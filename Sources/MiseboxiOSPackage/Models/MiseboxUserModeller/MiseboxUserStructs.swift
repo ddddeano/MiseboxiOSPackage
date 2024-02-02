@@ -8,27 +8,37 @@ import FirebaseFirestore // Import Firestore
 
 extension MiseboxUserManager {
     
-    public struct UserRole {
-        public var role: EcoSystemRole
-        public var name: String
-        
-        public init(role: EcoSystemRole, name: String) {
-            self.role = role
-            self.name = name
-        }
+    
+    public struct RoleType {
+        public var doc: String
+        public var collection: String
+        public var profile: String
+        public var profileCollection: String
+    }
 
-        public init?(fromDictionary fire: [String: Any]) {
-            guard let roleString = fire["role"] as? String,
-                  let role = EcoSystemRole(rawValue: roleString) else { return nil }
-            self.role = role
-            self.name = fire["name"] as? String ?? ""
-        }
+    public struct UserRole {
+        public var roleType: RoleType
+        public var screenName: String
         
         public func toFirestore() -> [String: Any] {
-            return ["role": role.rawValue, "name": name]
+            ["role_type": roleType.doc, "screen_name": screenName]
         }
+        
+        public init(roleType: RoleType, screenName: String) {
+            self.roleType = roleType
+            self.screenName = screenName
+        }
+        
+        public init?(dictionary: [String: Any]) {
+            let doc = dictionary["role_type"] as? String
+            let screenName = dictionary["screen_name"] as? String
+            let resolvedRoleType = RoleTypes.roleType(for: doc ?? "")
+            self.init(roleType: resolvedRoleType, screenName: screenName ?? "")
+        }
+
     }
-    
+
+
     public struct FullName {
         public var first = ""
         public var middle = ""
