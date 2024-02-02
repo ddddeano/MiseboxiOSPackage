@@ -17,10 +17,12 @@ public final class SessionManager: ObservableObject {
         loadThemePreferences()
     }
     
-    public enum UserRole: String {
-        case recruiter = "recruiter"
-        case chef = "chef"
-    }
+    public enum UserRole: String, CaseIterable {
+              case miseboxUser = "miseboxUser"
+              case agent = "agent"
+              case recruiter = "recruiter"
+              case chef = "chef"
+          }
 
     public func saveThemePreferences(isDarkModeEnabled: Bool) {
         UserDefaults.standard.set(isDarkModeEnabled, forKey: themePreferenceKey)
@@ -32,7 +34,7 @@ public final class SessionManager: ObservableObject {
         }
     }
     public func reset() {
-        self.session = Session(role: session.role)
+        self.session = Session()
     }
 }
 
